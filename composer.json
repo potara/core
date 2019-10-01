@@ -1,0 +1,14 @@
+{
+    "name": "potara/core",
+    "description": "potara.org",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bruno Lima",
+            "email": "eu@brunolima.me",
+            "homepage": "https://brunolima.me"
+        }
+    ],
+    "require": {}
+}

@@ -13,8 +13,6 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 require_once __DIR__.'./../vendor/autoload.php';
 
 use App\Index\Router\IndexRouter;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 use Potara\Core\Handlers\HttpErrorHandler;
 use Potara\Core\Handlers\ShutdownHandler;
 use Slim\Factory\ServerRequestCreatorFactory;
@@ -42,10 +40,5 @@ $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 $app->group('/',IndexRouter::class);
-
-//$app->get('/', function (Request $request, Response $response) {
-//    $response->getBody()->write('potara.org');
-//    return $response;
-//});
 
 $app->run();

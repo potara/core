@@ -10,35 +10,54 @@
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-require_once __DIR__.'./../vendor/autoload.php';
+require_once __DIR__ . './../vendor/autoload.php';
 
 use App\Index\Router\IndexRouter;
+use DI\Container;
 use Potara\Core\Handlers\HttpErrorHandler;
 use Potara\Core\Handlers\ShutdownHandler;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
+use Slim\Views\TwigMiddleware;
 
 $app = \DI\Bridge\Slim\Bridge::create();
 
-// Set that to your needs
+// CUSTOM HANDLERS
 $displayErrorDetails = true;
 
 $callableResolver = $app->getCallableResolver();
-$responseFactory = $app->getResponseFactory();
+$responseFactory  = $app->getResponseFactory();
 
 $serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
+$request              = $serverRequestCreator->createServerRequestFromGlobals();
 
-$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
+$errorHandler    = new HttpErrorHandler($callableResolver, $responseFactory);
 $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
 register_shutdown_function($shutdownHandler);
-
+///
 // Add Routing Middleware
 $app->addRoutingMiddleware();
 
 // Add Error Handling Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
+////////////////////////////
 
-$app->group('/',IndexRouter::class);
+$app->getContainer()->set('view', function () use (&$app) {
+    $basePath = $_SERVER['DOCUMENT_ROOT'] . './../app';
+    return new Twig($basePath, ['cache' => $_SERVER['DOCUMENT_ROOT'] . './../storage/cache/twig']);
+});
+$app->add(TwigMiddleware::createFromContainer($app));
+
+
+$app->group('/', IndexRouter::class);
+
+$app->get('/twig', function ($request, $response, Container $container) {
+
+    return $container->get('view')->render($response, 'Index/View/index.html.twig', [
+        'local' => 'teste twig'
+    ]);
+});
 
 $app->run();

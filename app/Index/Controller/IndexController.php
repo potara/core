@@ -11,13 +11,20 @@
 namespace App\Index\Controller;
 
 
+use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IndexController
 {
-    public function index(Request $request, Response $response){
-        $response->getBody()->write('-');
-        return $response;
+    public function index(Request $request, Response $response,Container $container)
+    {
+        var_dump($container->get('twig'));
+        die;
+        return $container->twig->render($response, 'Index/View/index.html.twig', [
+            'local' => 'IndexController:index'
+        ]);
+//        $response->getBody()->write('<h3>IndexController:index</h3>');
+//        return $response;
     }
 }

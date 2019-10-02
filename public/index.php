@@ -44,12 +44,14 @@ $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
 ////////////////////////////
 
-$app->getContainer()->set('view', function () use (&$app) {
+//TWIG
+$app->getContainer()->set('view', function () {
     $basePath = $_SERVER['DOCUMENT_ROOT'] . './../app';
-    return new Twig($basePath, ['cache' => $_SERVER['DOCUMENT_ROOT'] . './../storage/cache/twig']);
+    $cache    = $_SERVER['DOCUMENT_ROOT'] . './../storage/cache/twig';
+    return new Twig($basePath, ['cache' => $cache]);
 });
 $app->add(TwigMiddleware::createFromContainer($app));
-
+////////////////////////////
 
 $app->group('/', IndexRouter::class);
 

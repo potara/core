@@ -46,8 +46,8 @@ $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
 //TWIG
 $app->getContainer()->set('view', function () {
-    $basePath = $_SERVER['DOCUMENT_ROOT'] . './../app';
-    $cache    = $_SERVER['DOCUMENT_ROOT'] . './../storage/cache/twig';
+    $basePath = $_SERVER['DOCUMENT_ROOT'] . '/../app';
+    $cache    = $_SERVER['DOCUMENT_ROOT'] . '/../storage/cache/twig';
     return new Twig($basePath, ['cache' => $cache]);
 });
 $app->add(TwigMiddleware::createFromContainer($app));

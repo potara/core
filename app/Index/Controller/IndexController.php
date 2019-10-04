@@ -19,12 +19,8 @@ class IndexController
 {
     public function index(Request $request, Response $response,Container $container)
     {
-        var_dump($container->get('twig'));
-        die;
-        return $container->twig->render($response, 'Index/View/index.html.twig', [
+        return $container->get('view')->render($response, 'Index/View/index.html.twig', [
             'local' => 'IndexController:index'
         ]);
-//        $response->getBody()->write('<h3>IndexController:index</h3>');
-//        return $response;
     }
 }

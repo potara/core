@@ -18,7 +18,6 @@ use Potara\Core\Handlers\HttpErrorHandler;
 use Potara\Core\Handlers\ShutdownHandler;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Views\Twig;
-use Slim\Views\TwigExtension;
 use Slim\Views\TwigMiddleware;
 
 $app = \DI\Bridge\Slim\Bridge::create();
@@ -52,6 +51,8 @@ $app->getContainer()->set('view', function () {
 });
 $app->add(TwigMiddleware::createFromContainer($app));
 ////////////////////////////
+
+///////////////////////////
 
 $app->group('/', IndexRouter::class);
 

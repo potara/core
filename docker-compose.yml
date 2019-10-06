@@ -1,12 +1,12 @@
 version: "3.6"
 services:
   nginx:
-    image: brunolimame/nginx:1.15.12
+    image: nginx:alpine
+    container_name: potara-webserver
     ports:
       - 80:80
-    restart: always
     volumes:
-      - ./:/home:rw
+      - .:/application:rw
       - ./.docker/nginx/conf:/etc/nginx/conf.d
       - ./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf
     links:
@@ -15,10 +15,11 @@ services:
       - php
 
   php:
-    image: brunolimame/php:7.2-fpm-stretch
+    image: brunolimame/php:7.3-fpm
+    container_name: potara-php-fpm
+    working_dir: /application
     expose:
       - 9000
-    restart: always
     volumes:
-      - ./:/home:rw
-      - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./:/application:rw
+      - ./.docker/php/php-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini

@@ -21,13 +21,11 @@
         timeoutForSmallTests="1"
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
-        verbose="false">
+        verbose="false"
+        bootstrap="./vendor/autoload.php">
     <testsuites>
         <testsuite name="CRUD">
             <directory suffix="Test.php">src/Core/Crud/tests/</directory>
-        </testsuite>
-        <testsuite name="Lib">
-            <directory suffix="Test.php">src/Core/Lib/tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

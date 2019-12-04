@@ -1,4 +1,6 @@
 composer.phar
+phpunit.phar
+.phpunit.result.cache
 /vendor/
 /.idea/
 /storage/cache/twig/*/**

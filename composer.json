@@ -28,8 +28,5 @@
     },
     "require-dev": {
         "phpunit/phpunit": "8"
-    },
-    "scripts": {
-        "test": "sh vendor/bin/phpunit"
     }
 }

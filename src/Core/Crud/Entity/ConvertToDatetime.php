@@ -4,29 +4,35 @@ namespace Potara\Core\Crud\Entity;
 
 final class ConvertToDatetime implements ConvertToInterface
 {
-    /**
-     * @param $value
-     * @param string $format
-     * @return \DateTime
-     */
-    static function toPHP($value, $format = 'Y-m-d H:i:s'): \DateTime
+
+    protected $options;
+
+    public function __construct($options = null)
     {
-        if (!is_null($value)) {
-            $newDateTime = \DateTime::createFromFormat($format, $value);
-            if ($newDateTime) {
-                return $newDateTime;
-            }
-        }
-        return $value;
+        $this->options = [
+            'format' => empty($options['format']) ? 'Y-m-d H:i:s' : $options['format']
+        ];
     }
 
     /**
      * @param $value
-     * @param string $format
-     * @return string
      */
-    static function toDB($value, $format = 'Y-m-d H:i:s'): string
+    public function toPHP(&$value): void
     {
-        return $value instanceof \DateTime ? $value->format($format) : $value;
+        if (!is_null($value)) {
+            $newDateTime = \DateTime::createFromFormat($this->options['format'], $value);
+            if ($newDateTime) {
+                $value = $newDateTime;
+            }
+        }
+    }
+
+
+    /**
+     * @param $value
+     */
+    public function toDB(&$value): void
+    {
+        $value = $value instanceof \DateTime ? $value->format($this->options['format']) : $value;
     }
 }

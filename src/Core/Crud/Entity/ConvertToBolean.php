@@ -2,23 +2,21 @@
 
 namespace Potara\Core\Crud\Entity;
 
-class ConvertToBolean implements ConvertToInterface
+final class ConvertToBolean implements ConvertToInterface
 {
     /**
      * @param $value
-     * @return bool
      */
-    static function toPHP($value): bool
+    public function toPHP(&$value): void
     {
-        return is_null($value) ? null : (bool)$value;
+        $value = is_null($value) ? null : (bool)$value;
     }
 
     /**
      * @param $value
-     * @return int
      */
-    static function toDB($value): Integer
+    public function toDB(&$value): void
     {
-        return (int)$value;
+        $value = (int)$value;
     }
 }

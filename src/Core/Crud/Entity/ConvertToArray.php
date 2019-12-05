@@ -4,32 +4,27 @@ namespace Potara\Core\Crud\Entity;
 
 final class ConvertToArray implements ConvertToInterface
 {
-    /**
-     * @param $value
-     * @param string $delimitador
-     * @return array
-     */
-    static function toPHP($value, $delimitador = ",")
+
+    public function toPHP(&$value, $delimitador = ","): void
     {
         if (is_null($value)) {
-            return [];
+            $value = [];
+        } else {
+            $newArray = explode($delimitador, $value);
+            if (is_string($newArray)) {
+                $value = [$newArray];
+            } else {
+                $value = $newArray;
+            }
         }
-
-        $newArray = explode($delimitador, $value);
-        if (is_string($newArray)) {
-            return [$newArray];
-        }
-
-        return $newArray;
     }
 
     /**
      * @param $value
      * @param string $delimitador
-     * @return string|null
      */
-    static function toDB($value, $delimitador = ",")
+    public function toDB(&$value, $delimitador = ","): void
     {
-        return (empty($data) || !is_array($data)) ? null : implode($delimitador, $value);
+        $value = (empty($data) || !is_array($data)) ? null : implode($delimitador, $value);
     }
 }

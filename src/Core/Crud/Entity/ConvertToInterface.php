@@ -4,7 +4,13 @@ namespace Potara\Core\Crud\Entity;
 
 interface ConvertToInterface
 {
-    static function toPHP($value);
+    /**
+     * @param $value
+     */
+    public function toPHP(&$value): void;
 
-    static function toDB($value);
+    /**
+     * @param $value
+     */
+    public function toDB(&$value): void;
 }

@@ -28,13 +28,27 @@ class EntityTest extends TestCase
         ]);
     }
 
-    public function testEntity()
+    public function testEntityToPHP()
     {
         $entity = $this->getEntity();
-        $this->assertIsInt($entity->id,'ID não é Inteiro');
-        $this->assertIsString($entity->name,'Nome não é String');
-        $this->assertIsArray($entity->serialize,'Serialize não é Array');
-        $this->assertIsBool($entity->status,'Status não é Bolean');
-        $this->assertTrue($entity->date instanceof \DateTime,'Data não é data');
+        $this->assertIsInt($entity->id, 'ID não é Inteiro');
+        $this->assertIsString($entity->name, 'Nome não é String');
+        $this->assertIsFloat($entity->money, 'Money não é float');
+        $this->assertIsFloat($entity->total, 'Total não é float');
+        $this->assertIsArray($entity->serialize, 'Serialize não é Array');
+        $this->assertIsBool($entity->status, 'Status não é Bolean');
+        $this->assertTrue($entity->date instanceof \DateTime, 'Data não é data');
+    }
+
+    public function testEntityToDB()
+    {
+        $entity = $this->getEntity()->toSave();
+        $this->assertIsInt($entity->id, 'ID não é Inteiro');
+        $this->assertIsString($entity->name, 'Nome não é String');
+        $this->assertIsFloat($entity->money, 'Money não é string');
+        $this->assertIsFloat($entity->total, 'Total não é string');
+        $this->assertIsString($entity->serialize, 'Serialize não é string');
+        $this->assertIsInt($entity->status, 'Status não é inteiro');
+        $this->assertIsString($entity->date, 'Data não é string');
     }
 }

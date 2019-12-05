@@ -2,14 +2,14 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToInteger implements ConvertToInterface
+final class ConvertToSerialize implements ConvertToInterface
 {
     /**
      * @param $value
      */
     public function toPHP(&$value): void
     {
-        $value = (int)$value;
+        $value = empty($value) ? $value : unserialize($value);
     }
 
     /**
@@ -17,6 +17,6 @@ final class ConvertToInteger implements ConvertToInterface
      */
     public function toDB(&$value): void
     {
-        $this->toPHP($value);
+        $value = is_array($value) ? serialize($value) : $value;
     }
 }

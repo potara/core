@@ -25,6 +25,6 @@ final class ConvertToArray implements ConvertToInterface
      */
     public function toDB(&$value, $delimitador = ","): void
     {
-        $value = (empty($data) || !is_array($data)) ? null : implode($delimitador, $value);
+        $value = (empty($value) || !is_array($value)) ? null : implode($delimitador, $value);
     }
 }

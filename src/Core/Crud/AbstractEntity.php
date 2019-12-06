@@ -108,15 +108,23 @@ abstract class AbstractEntity
 
                 $patternDoc = "#@([a-zA-Z]+)\s([a-zA-Z0-9\=\&, ()_].*)#";
                 preg_match_all($patternDoc, current($matches[1]), $docMatches, PREG_PATTERN_ORDER);
+                $typePropety = current($docMatches[1]);
 
-                if (current($docMatches[1]) == 'var') {
-                    parse_str(trim(current($docMatches[2])), $parseVar);
-
-                    $nameClassConvert = trim("Potara\\Core\\Crud\\Entity\\ConvertTo" . ucfirst($parseVar['type']));
-                    unset($parseVar['type']);
-                    if (class_exists($nameClassConvert)) {
-                        $result[$propety] = count($parseVar) > 0 ? new $nameClassConvert($parseVar) : new $nameClassConvert();
+                $loadClass = function ($nameClass, $options = null) {
+                    unset($options['type']);
+                    unset($options['name_class']);
+                    if (class_exists($nameClass)) {
+                        return count($options) > 0 ? new $nameClass($options) : new $nameClass();
                     }
+                    return null;
+                };
+
+                parse_str(trim(current($docMatches[2])), $parseVar);
+                if ($typePropety == 'var') {
+                    $nameClassConvert = trim("Potara\\Core\\Crud\\Entity\\ConvertTo" . ucfirst($parseVar['type']));
+                    $result[$propety] = $loadClass($nameClassConvert, $parseVar);
+                } elseif ($typePropety == 'class') {
+                    $result[$propety] = $loadClass($parseVar['name_class'], $parseVar);
                 }
                 return $result;
             }, []

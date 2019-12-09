@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Potara (https://potara.org)
+ *
+ * @see       https://github.com/potara/core
+ * @copyright Copyright (c) 2018-2020 Bruno Lima
+ * @author    Bruno Lima <brunolimame@gmail.com>
+ * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
+ */
 
 namespace Potara\Core\Crud\Entity;
 
@@ -13,6 +21,7 @@ final class ConvertToJson extends AbstractConvertTo implements ConvertToInterfac
             'depth'   => empty($options['depth']) ? 512 : (int)$options['depth'],
             'options' => empty($options['options']) ? 0 : $options['options'],
         ], $options);
+
         parent::__construct($entity, $options);
     }
 

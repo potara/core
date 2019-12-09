@@ -8,17 +8,10 @@
  * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
  */
 
-namespace Potara\Core\Crud\Entity;
+namespace Potara\Core\Kernel;
 
-interface ConvertToInterface
+
+class Kernel
 {
-    /**
-     * @param $value
-     */
-    public function toPHP(&$value): void;
 
-    /**
-     * @param $value
-     */
-    public function toDB(&$value): void;
 }

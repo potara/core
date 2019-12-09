@@ -15,9 +15,13 @@ class EntitySample extends AbstractEntity
      * @var type=string
      */
     public $name;
+
+    /**
+     * @var type=slug&var=name
+     */
+    public $slug;
     /**
      * @var type=datetime
-     *
      */
     public $date;
     /**

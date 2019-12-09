@@ -10,7 +10,6 @@
 
 namespace Potara\Core\Handlers;
 
-use Potara\Core\Handlers\HttpErrorHandler;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\ResponseEmitter;

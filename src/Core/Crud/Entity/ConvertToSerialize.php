@@ -2,7 +2,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToSerialize implements ConvertToInterface
+final class ConvertToSerialize extends AbstractConvertTo implements ConvertToInterface
 {
     /**
      * @param $value

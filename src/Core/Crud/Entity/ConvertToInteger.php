@@ -2,7 +2,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToInteger implements ConvertToInterface
+final class ConvertToInteger extends AbstractConvertTo implements ConvertToInterface
 {
     /**
      * @param $value

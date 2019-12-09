@@ -2,7 +2,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToBolean implements ConvertToInterface
+final class ConvertToBolean extends AbstractConvertTo implements ConvertToInterface
 {
     /**
      * @param $value

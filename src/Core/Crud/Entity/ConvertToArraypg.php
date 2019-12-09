@@ -2,7 +2,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToArraypg implements ConvertToInterface
+final class ConvertToArraypg extends AbstractConvertTo implements ConvertToInterface
 {
 
     /**

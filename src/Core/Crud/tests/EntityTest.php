@@ -20,7 +20,7 @@ class EntityTest extends TestCase
     {
         return new EntitySample([
             'id'        => '1',
-            'name'      => 'Bruno Lima',
+            'name'      => 'Bruno Lima -abcç 132',
             'date'      => '2019-12-03 10:37:00',
             'money'     => '10.1555',
             'total'     => '546810.877615',
@@ -46,6 +46,7 @@ class EntityTest extends TestCase
         $entity = $this->getEntity()->toSave();
         $this->assertIsInt($entity->id, 'ID não é Inteiro');
         $this->assertIsString($entity->name, 'Nome não é String');
+        $this->assertIsString($entity->slug, 'Slug não é String');
         $this->assertIsFloat($entity->money, 'Money não é string');
         $this->assertIsFloat($entity->total, 'Total não é string');
         $this->assertIsString($entity->serialize, 'Serialize não é string');

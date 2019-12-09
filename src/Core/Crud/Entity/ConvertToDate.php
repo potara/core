@@ -2,15 +2,16 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToDate implements ConvertToInterface
-{
-    protected $options;
+use Potara\Core\Crud\AbstractEntity;
 
-    public function __construct($options = null)
+final class ConvertToDate extends AbstractConvertTo implements ConvertToInterface
+{
+    public function __construct(AbstractEntity &$entity, &$options = [])
     {
-        $this->options = [
+        $options = $this->factoryOptions([
             'format' => empty($options['format']) ? 'Y-m-d' : $options['format']
-        ];
+        ], $options);
+        parent::__construct($entity, $options);
     }
 
     /**
@@ -18,7 +19,7 @@ final class ConvertToDate implements ConvertToInterface
      */
     public function toPHP(&$value): void
     {
-        (new ConvertToDatetime($this->options))->toPHP($value);
+        (new ConvertToDatetime($this->entity, $this->options))->toPHP($value);
     }
 
     /**
@@ -26,6 +27,6 @@ final class ConvertToDate implements ConvertToInterface
      */
     public function toDB(&$value): void
     {
-        (new ConvertToDatetime($this->options))->toDB($value);
+        (new ConvertToDatetime($this->entity, $this->options))->toDB($value);
     }
 }

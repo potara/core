@@ -2,17 +2,18 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToDecimal implements ConvertToInterface
-{
-    protected $options;
+use Potara\Core\Crud\AbstractEntity;
 
-    public function __construct($options = null)
+final class ConvertToDecimal extends AbstractConvertTo implements ConvertToInterface
+{
+    public function __construct(AbstractEntity &$entity, &$options = [])
     {
-        $this->options = [
+        $options = $this->factoryOptions([
             'decimals' => empty($options['decimals']) ? 0 : (int)$options['decimals'],
             'dp'       => empty($options['dp']) ? '.' : (int)$options['dp'],
             'ts'       => empty($options['ts']) ? ',' : (int)$options['ts'],
-        ];
+        ], $options);
+        parent::__construct($entity, $options);
     }
 
     /**

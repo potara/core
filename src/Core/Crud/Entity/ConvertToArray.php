@@ -2,7 +2,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToArray implements ConvertToInterface
+final class ConvertToArray extends AbstractConvertTo implements ConvertToInterface
 {
 
     public function toPHP(&$value, $delimitador = ","): void

@@ -2,20 +2,19 @@
 
 namespace Potara\Core\Crud\Entity;
 
-final class ConvertToJson implements ConvertToInterface
+use Potara\Core\Crud\AbstractEntity;
+
+final class ConvertToJson extends AbstractConvertTo implements ConvertToInterface
 {
-
-    protected $options;
-
-    public function __construct($options = null)
+    public function __construct(AbstractEntity &$entity, &$options = null)
     {
-        $this->options = [
+        $options = $this->factoryOptions([
             'assoc'   => is_bool($options['assoc']) ? $options['assoc'] : true,
             'depth'   => empty($options['depth']) ? 512 : (int)$options['depth'],
             'options' => empty($options['options']) ? 0 : $options['options'],
-        ];
+        ], $options);
+        parent::__construct($entity, $options);
     }
-
 
     /**
      * @param $value

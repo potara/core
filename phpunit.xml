@@ -27,5 +27,8 @@
         <testsuite name="CRUD">
             <directory suffix="Test.php">src/Core/Crud/tests/</directory>
         </testsuite>
+        <testsuite name="Lib">
+            <directory suffix="Test.php">src/Core/Lib/tests/</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

@@ -32,25 +32,25 @@ class EntityTest extends TestCase
     public function testEntityToPHP()
     {
         $entity = $this->getEntity();
-        $this->assertIsInt($entity->id, 'ID não é Inteiro');
-        $this->assertIsString($entity->name, 'Nome não é String');
-        $this->assertIsFloat($entity->money, 'Money não é float');
-        $this->assertIsFloat($entity->total, 'Total não é float');
-        $this->assertIsArray($entity->serialize, 'Serialize não é Array');
-        $this->assertIsBool($entity->status, 'Status não é Bolean');
-        $this->assertTrue($entity->date instanceof \DateTime, 'Data não é data');
+        $this->assertIsInt($entity->id, 'ID not integer');
+        $this->assertIsString($entity->name, 'name not string');
+        $this->assertIsFloat($entity->money, 'money notfloat');
+        $this->assertIsFloat($entity->total, 'total not float');
+        $this->assertIsArray($entity->serialize, 'serialize not array');
+        $this->assertIsBool($entity->status, 'status not bolean');
+        $this->assertTrue($entity->date instanceof \DateTime, 'data not datetime');
     }
 
     public function testEntityToDB()
     {
         $entity = $this->getEntity()->toSave();
-        $this->assertIsInt($entity->id, 'ID não é Inteiro');
-        $this->assertIsString($entity->name, 'Nome não é String');
-        $this->assertIsString($entity->slug, 'Slug não é String');
-        $this->assertIsFloat($entity->money, 'Money não é string');
-        $this->assertIsFloat($entity->total, 'Total não é string');
-        $this->assertIsString($entity->serialize, 'Serialize não é string');
-        $this->assertIsInt($entity->status, 'Status não é inteiro');
-        $this->assertIsString($entity->date, 'Data não é string');
+        $this->assertIsInt($entity->id, 'ID not integer');
+        $this->assertIsString($entity->name, 'name not string');
+        $this->assertIsString($entity->slug, 'slug not string');
+        $this->assertIsFloat($entity->money, 'money not string');
+        $this->assertIsFloat($entity->total, 'total not string');
+        $this->assertIsString($entity->serialize, 'serialize not string');
+        $this->assertIsInt($entity->status, 'status not integer');
+        $this->assertIsString($entity->date, 'date not string');
     }
 }

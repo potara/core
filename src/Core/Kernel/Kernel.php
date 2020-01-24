@@ -23,7 +23,8 @@ class Kernel
 
     public function __construct($conf = [])
     {
-        $this->app = SlimBridge::create();
+        $kernelConf = new KernelConf($conf);
+        $this->app  = SlimBridge::create();
 
         // CUSTOM HANDLERS
         $displayErrorDetails = true;
@@ -54,6 +55,7 @@ class Kernel
             return new Twig($basePath, ['cache' => $cache]);
         });
         $this->app->add(TwigMiddleware::createFromContainer($this->app));
+
 
     }
 }

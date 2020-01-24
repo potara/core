@@ -26,8 +26,8 @@ abstract class AbstractEntity
      * @param array $data
      * @return AbstractEntity
      */
-    protected function hydrator($data = []): self
-    {
+    protected function hydrator($data = [])
+    : self {
         foreach ($data as $key => $valeu) {
             !property_exists($this, $key) ?: $this->$key = $valeu;
         }
@@ -37,7 +37,8 @@ abstract class AbstractEntity
     /**
      * @return AbstractEntity
      */
-    public function convertToPhpValue(): self
+    public function convertToPhpValue()
+    : self
     {
         $this->convertToDoc('toPHP');
         return $this;
@@ -46,7 +47,8 @@ abstract class AbstractEntity
     /**
      * @return AbstractEntity
      */
-    public function convertToDbValue(): self
+    public function convertToDbValue()
+    : self
     {
         $this->convertToDoc('toDB');
         return $this;
@@ -55,7 +57,8 @@ abstract class AbstractEntity
     /**
      * @return array
      */
-    protected function noToArray(): array
+    protected function noToArray()
+    : array
     {
         return [];
     }
@@ -63,7 +66,8 @@ abstract class AbstractEntity
     /**
      * @return array
      */
-    public function toArray(): array
+    public function toArray()
+    : array
     {
         return array_reduce(array_keys(get_object_vars($this)), function ($result, $item) {
             in_array($item, $this->noToArray()) ?: $result[$item] = $this->$item;
@@ -75,7 +79,8 @@ abstract class AbstractEntity
     /**
      * @return array
      */
-    public function beforeToSave(): array
+    public function beforeToSave()
+    : array
     {
         $toArray = $this->toArray();
         unset($toArray['id']);
@@ -85,7 +90,8 @@ abstract class AbstractEntity
     /**
      * @return $this
      */
-    public function toSave(): self
+    public function toSave()
+    : self
     {
         $this->convertToDbValue();
         return $this;
@@ -104,7 +110,7 @@ abstract class AbstractEntity
      * @return mixed
      * @throws \ReflectionException
      */
-    protected function readerDoc(): array
+    protected function readerDoc() : array
     {
         $reflector  = new \ReflectionClass($this);
         $selfEntity = $this;
@@ -136,7 +142,7 @@ abstract class AbstractEntity
                         $parseVar['text'] = $this->$namePropety;
                     }
                     $result[$propety] = $loadClass($nameClassConvert, $parseVar);
-                } elseif ($typePropety == 'class') {
+                } else if ($typePropety == 'class') {
                     $result[$propety] = $loadClass($parseVar['name_class'], $parseVar);
                 }
                 return $result;
@@ -144,13 +150,15 @@ abstract class AbstractEntity
         );
     }
 
-    protected function convertToDoc($method = 'toPHP'): AbstractEntity
-    {
+    protected function convertToDoc($method = 'toPHP') : AbstractEntity {
         $loadDoc  = $this->readerDoc();
         $propetys = array_keys(get_object_vars($this));
+
         array_walk($propetys, function ($propety) use ($loadDoc, $method) {
-            if (@$loadDoc[$propety] instanceof ConvertToInterface) {
-                $loadDoc[$propety]->$method($this->$propety);
+            if (key_exists($propety, $loadDoc)) {
+                if ($loadDoc[$propety] instanceof ConvertToInterface) {
+                    $loadDoc[$propety]->$method($this->$propety);
+                }
             }
         });
         return $this;

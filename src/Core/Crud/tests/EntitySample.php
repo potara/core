@@ -41,6 +41,8 @@ class EntitySample extends AbstractEntity
      */
     public $total;
 
+    public $notype;
+
     /**
      * @var type=serialize
      */

@@ -16,9 +16,9 @@ use Potara\Core\Crud\tests\EntitySample;
 class EntityTest extends TestCase
 {
 
-    protected function getEntity()
+    protected function getEntity($data=[])
     {
-        return new EntitySample([
+        return new EntitySample(array_replace($data,[
             'id'        => '1',
             'name'      => 'Bruno Lima -abcç 132',
             'date'      => '2019-12-03 10:37:00',
@@ -26,7 +26,7 @@ class EntityTest extends TestCase
             'total'     => '546810.877615',
             'serialize' => 'a:3:{s:4:"name";s:10:"Bruno Lima";s:4:"year";i:1985;s:6:"genere";s:1:"m";}',
             'status'    => '1'
-        ]);
+        ]));
     }
 
     public function testEntityToPHP()
@@ -36,6 +36,7 @@ class EntityTest extends TestCase
         $this->assertIsString($entity->name, 'name not string');
         $this->assertIsFloat($entity->money, 'money notfloat');
         $this->assertIsFloat($entity->total, 'total not float');
+        $this->assertNull($entity->notype, 'notype not null');
         $this->assertIsArray($entity->serialize, 'serialize not array');
         $this->assertIsBool($entity->status, 'status not bolean');
         $this->assertTrue($entity->date instanceof \DateTime, 'data not datetime');

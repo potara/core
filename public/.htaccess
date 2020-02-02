@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+
+    Options -MultiViews
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule \.htaccess - [F]
+    RewriteRule ^robots.txt - [L]
+
+    ## REMOVING THE WWW ###
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,L]
+
+    ## FORCE HTTPS ##
+    #RewriteCond %{HTTPS} off
+    #RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,QSA,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [NC,QSA,L]
+
+</IfModule>

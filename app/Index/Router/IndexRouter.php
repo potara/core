@@ -12,14 +12,16 @@ namespace App\Index\Router;
 
 
 use App\Index\Controller\IndexController;
+use Potara\Core\RouterInterface;
 use Slim\Routing\RouteCollectorProxy;
 
-class IndexRouter
+class IndexRouter implements RouterInterface
 {
 
     public function __invoke(RouteCollectorProxy $router)
     {
         $indexController = IndexController::class;
         $router->get('', [$indexController, 'index']);
+        $router->get('teste', [$indexController, 'index']);
     }
 }

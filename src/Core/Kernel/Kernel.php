@@ -10,12 +10,7 @@
 
 namespace Potara\Core\Kernel;
 
-use \DI\Bridge\Slim\Bridge as SlimBridge;
-use Potara\Core\Handlers\HttpErrorHandler;
-use Potara\Core\Handlers\ShutdownHandler;
-use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Views\Twig;
-use Slim\Views\TwigMiddleware;
+use DI\Bridge\Slim\Bridge as SlimBridge;
 
 class Kernel
 {

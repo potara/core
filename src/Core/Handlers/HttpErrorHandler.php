@@ -10,6 +10,7 @@
 
 namespace Potara\Core\Handlers;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpException;
@@ -19,7 +20,6 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpNotImplementedException;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Handlers\ErrorHandler;
-use Exception;
 use Throwable;
 
 class HttpErrorHandler extends ErrorHandler

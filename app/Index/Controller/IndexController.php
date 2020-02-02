@@ -16,10 +16,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IndexController
 {
-    public function index(Request $request, Response $response,Container $container)
+    public function index(Request $request, Response $response, Container $container)
     {
-        return $container->get('view')->render($response, 'Index/View/index.html.twig', [
-            'local' => 'IndexController:index'
-        ]);
+        return $container->get('view')
+                         ->render($response, 'Index/View/index.html.twig', [
+                             'local' => 'IndexController:index'
+                         ]);
     }
 }

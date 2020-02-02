@@ -15,22 +15,20 @@ use Potara\Core\Crud\ConfigModuleInterface;
 
 class ConfigModule implements ConfigModuleInterface
 {
-    public static function isEnable(): bool
+    public static function isEnable() : bool
     {
         return true;
     }
 
-    public static function getConf(): array
+    public static function getConf() : array
     {
         return [
             'router'   => [
                 '' => \App\Index\Router\IndexRouter::class
             ],
-            'provider' => [
-//                \App\Index\Provider\IndexProvider::class => []
+            'provider' => [//                \App\Index\Provider\IndexProvider::class => []
             ],
-            'event'    => [
-//                \App\Index\Event\IndexEvent::class => []
+            'event'    => [//                \App\Index\Event\IndexEvent::class => []
             ]
         ];
     }

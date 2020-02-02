@@ -22,6 +22,5 @@ class IndexRouter implements RouterInterface
     {
         $indexController = IndexController::class;
         $router->get('', [$indexController, 'index']);
-        $router->get('teste', [$indexController, 'index']);
     }
 }

@@ -29,9 +29,11 @@ abstract class AbstractEntity
      */
     protected function hydrator($data = []) : self
     {
-        foreach ($data as $key => $valeu) {
+        array_walk($data, function ($valeu, $key)
+        {
             !property_exists($this, $key) ?: $this->$key = $valeu;
-        }
+        });
+
         return $this;
     }
 

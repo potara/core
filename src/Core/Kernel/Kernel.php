@@ -19,43 +19,21 @@ use Slim\Views\TwigMiddleware;
 
 class Kernel
 {
+    /** @var \Slim\App */
     public $app;
 
     public function __construct($conf = [])
     {
-        $kernelConf = new KernelConf($conf);
         $this->app  = SlimBridge::create();
+        $kernelConf = new KernelConf($conf);
+        $this->app->getContainer()
+                  ->set('kernel-conf', $kernelConf);
 
-        // CUSTOM HANDLERS
-        $displayErrorDetails = true;
-
-        $callableResolver = $this->app->getCallableResolver();
-        $responseFactory  = $this->app->getResponseFactory();
-
-        $serverRequestCreator = ServerRequestCreatorFactory::create();
-        $request              = $serverRequestCreator->createServerRequestFromGlobals();
-
-        $errorHandler    = new HttpErrorHandler($callableResolver, $responseFactory);
-        $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-        register_shutdown_function($shutdownHandler);
-
-        ///
-        // Add Routing Middleware
-        $this->app->addRoutingMiddleware();
-
-        // Add Error Handling Middleware
-        $errorMiddleware = $this->app->addErrorMiddleware($displayErrorDetails, false, false);
-        $errorMiddleware->setDefaultErrorHandler($errorHandler);
-        ////////////////////////////
-
-        //TWIG
-        $this->app->getContainer()->set('view', function () {
-            $basePath = $_SERVER['DOCUMENT_ROOT'] . '/../app';
-            $cache    = $_SERVER['DOCUMENT_ROOT'] . '/../storage/cache/twig';
-            return new Twig($basePath, ['cache' => $cache]);
-        });
-        $this->app->add(TwigMiddleware::createFromContainer($this->app));
-
+        (new KernelModules())->load($this->app);
+        (new KernelProvider())->load($this->app);
+        (new KernelEvents())->load($this->app);
+        (new KernelMiddleware())->load($this->app);
+        (new KernelRouter())->load($this->app);
 
     }
 }

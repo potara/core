@@ -11,34 +11,27 @@
 
 namespace Potara\Core\Kernel;
 
+use Slim\App;
+
 class KernelProvider
 {
+
     /**
-     * @param $modules
-     * @param KernelInterface $kernel
+     * @param App $app
+     *
      * @return $this
      */
-    public function loadProvider($modules, Kernel &$kernel)
+    public function load(App &$app)
     {
-        $providers = $modules['provider'];
+        $providers = $app->getContainer()
+                         ->get('modules_load')['provider'];
+
         if (!empty($providers)) {
             foreach ($providers as $provider => $args) {
-                $this->registerProvider(new $provider, $args, $kernel);
+                (new $provider())->load($app, $args);
             }
         }
 
-        return $this;
-    }
-
-    /**
-     * @param ServiceProviderInterface $provider
-     * @param array $values
-     * @param KernelInterface $kernel
-     * @return $this
-     */
-    public function registerProvider(ServiceProviderInterface $provider, $values = [], KernelInterface $kernel)
-    {
-        $kernel->getContainer()->register($provider, $values);
         return $this;
     }
 }

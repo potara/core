@@ -12,25 +12,31 @@
 namespace Potara\Core\Kernel;
 
 
+use Slim\App;
+
 class KernelRouter
 {
+
     /**
-     * @param $modules
-     * @param Kernel $kernel
+     * @param App $app
+     *
      * @return $this
      */
-    public function loadRoutes($modules, Kernel &$kernel)
+    public function load(App &$app)
     {
-        $this->factoryRouter($modules['router'], $kernel);
+        $routers = $app->getContainer()
+                       ->get('modules_load')['router'];
+
+        $this->factoryRouter($routers, $app);
+
         return $this;
     }
 
-
     /**
      * @param array $routers
-     * @param Kernel $kernel
+     * @param App   $app
      */
-    protected function factoryRouter($routers = [], Kernel &$kernel)
+    protected function factoryRouter($routers = [], App &$app)
     {
         if (!empty($routers) and is_array($routers)) {
             foreach ($routers as $routerName => $routerClass) {
@@ -40,12 +46,13 @@ class KernelRouter
                  */
                 if (is_array($routerClass)) {
                     self::factoryRouter($routerClass, $kernel);
-                } else {
+                }
+                else {
                     $nameRouter = "/";
                     if ($routerName != '') {
                         $nameRouter .= $routerName;
                     }
-                    $kernel->app->group($nameRouter, $routerClass);
+                    $app->group($nameRouter, $routerClass);
                 }
             }
         }

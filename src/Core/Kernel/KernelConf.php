@@ -36,7 +36,15 @@ class KernelConf extends AbstractEntity
      */
     public $log;
 
+    /**
+     * @var type=string
+     */
     public $modules;
+
+    /**
+     * @var type=string
+     */
+    public $modules_path;
 
     /**
      * @var type=string
@@ -48,6 +56,16 @@ class KernelConf extends AbstractEntity
      */
     public $cache_module;
 
+    /**
+     * @var type=bolean
+     */
+    public $ignore_cache_module;
+
+    /**
+     * @var type=string
+     */
+    public $cache_module_file;
+
 
     public function __construct($conf = [])
     {
@@ -55,24 +73,19 @@ class KernelConf extends AbstractEntity
         $storage      = "{$documentRoot}/../storage/";
 
         $confFinal = array_replace([
-            'root'         => $documentRoot,
-            'conf'         => $documentRoot . "/../conf/",
-            'storage'      => $storage,
-            'log'          => $storage . "log/",
-            'cache'        => $storage . "cache/",
-            'modules'      => [],
-            'cache_module' => true,
+            'root'                => $documentRoot,
+            'conf'                => $documentRoot . "/../conf/",
+            'storage'             => $storage,
+            'log'                 => $storage . "log/",
+            'cache'               => $storage . "cache/",
+            'modules'             => "app",
+            'modules_path'        => $documentRoot . "/../app",
+            'cache_module'        => true,
+            'ignore_cache_module' => false,
+            'cache_module_file'   => 'modules.yml'
         ], $conf);
-        parent::__construct($confFinal);
-    }
 
-    /**
-     * @param array $module
-     * @return self
-     */
-    public function addModule($module = [])
-    {
-        array_push($this->modules, $module);
-        return $this;
+        $confFinal['modules'] = empty($confFinal['modules']) ? 'app' : $confFinal['modules'];
+        parent::__construct($confFinal);
     }
 }

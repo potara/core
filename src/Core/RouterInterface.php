@@ -8,16 +8,12 @@
  * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
  */
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-require_once __DIR__ . './../vendor/autoload.php';
+namespace Potara\Core;
 
-use Potara\Core\Kernel\Kernel;
 
-$kernelConf = [
-    'cache_module' => false
-];
+use Slim\Routing\RouteCollectorProxy;
 
-$app = (new Kernel($kernelConf))->app;
-
-$app->run();
+interface RouterInterface
+{
+    public function __invoke(RouteCollectorProxy $routeCollectorProxy);
+}

@@ -27,9 +27,10 @@ class KernelEvents
                       ->get('modules_load')['event'];
 
         if (!empty($events)) {
-            foreach ($events as $event => $args) {
-                (new $event())->load($app, $args);
-            }
+            array_walk($events, function ($args, $event) use (&$app)
+            {
+                $app->add(new $event($app, $args));
+            });
         }
 
         return $this;

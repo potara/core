@@ -27,7 +27,7 @@ class ConfigModule implements ConfigModuleInterface
                 \Potara\Core\Provider\TwigProvider::class         => [],
             ],
             'middleware' => [
-//                \Potara\Core\Middleware\TwigMiddleware::class => []
+                \Potara\Core\Middleware\TrailingSlash::class => []
             ]
         ];
     }

@@ -11,7 +11,7 @@
 namespace Potara\Core\Kernel;
 
 use Potara\Core\Crud\ConfigModuleInterface;
-use \Slim\App;
+use Slim\App;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -50,16 +50,15 @@ class KernelModules
                 return $result;
             }, []);
 
-            if (!$kernelConf->ignore_cache_module) {
-                if ($kernelConf->cache_module) {
-                    /**
-                     * Salvando dados em cache
-                     *
-                     * Saving data in cache
-                     */
-                    $yamlContent = Yaml::dump($listModulesEnable);
-                    file_put_contents($cacheFile, $yamlContent);
-                }
+
+            if ($kernelConf->cache_module) {
+                /**
+                 * Salvando dados em cache
+                 *
+                 * Saving data in cache
+                 */
+                $yamlContent = Yaml::dump($listModulesEnable);
+                file_put_contents($cacheFile, $yamlContent);
             }
 
         }

@@ -8,16 +8,13 @@
  * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
  */
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-require_once __DIR__ . './../vendor/autoload.php';
+namespace Potara\Core;
 
-use Potara\Core\Kernel\Kernel;
 
-$kernelConf = [
-    'cache_module' => false
-];
+use DI\Container;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-$app = (new Kernel($kernelConf))->app;
-
-$app->run();
+interface EventInterface
+{
+    public function load(Container $container, EventDispatcher $eventDispatcher, $args = []);
+}

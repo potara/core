@@ -39,13 +39,14 @@ class KernelRouter
     protected function factoryRouter($routers = [], App &$app)
     {
         if (!empty($routers) and is_array($routers)) {
-            foreach ($routers as $routerName => $routerClass) {
+            array_walk($routers, function ($routerClass, $routerName) use (&$app)
+            {
                 /**
                  * Se $routerClass for um array, reinicie o processo, caso não, crie o crupo de rotas
                  * If $routerClass for an array, restart the process, if no, create the route group
                  */
                 if (is_array($routerClass)) {
-                    self::factoryRouter($routerClass, $kernel);
+                    self::factoryRouter($routerClass, $app);
                 }
                 else {
                     $nameRouter = "/";
@@ -54,7 +55,7 @@ class KernelRouter
                     }
                     $app->group($nameRouter, $routerClass);
                 }
-            }
+            });
         }
     }
 }

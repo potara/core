@@ -26,11 +26,11 @@ class KernelProvider
         $providers = $app->getContainer()
                          ->get('modules_load')['provider'];
 
-        if (!empty($providers)) {
-            foreach ($providers as $provider => $args) {
-                (new $provider())->load($app, $args);
-            }
-        }
+
+        array_walk($providers, function ($args, $provider) use (&$app)
+        {
+            (new $provider())->load($app, $args);
+        });
 
         return $this;
     }

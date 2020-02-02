@@ -12,21 +12,9 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 require_once __DIR__ . './../vendor/autoload.php';
 
-use App\Index\Router\IndexRouter;
-use DI\Container;
 use Potara\Core\Kernel\Kernel;
 
 $app = (new Kernel())->app;
 
-///////////////////////////
-
-$app->group('/', IndexRouter::class);
-
-$app->get('/twig', function ($request, $response, Container $container) {
-
-    return $container->get('view')->render($response, 'Index/View/index.html.twig', [
-        'local' => 'teste twig'
-    ]);
-});
 
 $app->run();

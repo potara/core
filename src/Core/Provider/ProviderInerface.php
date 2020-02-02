@@ -8,20 +8,12 @@
  * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
  */
 
-namespace Potara\Core\Kernel;
+namespace Potara\Core\Provider;
 
 
-class KernelFactory
+use Slim\App;
+
+interface ProviderInerface
 {
-
-    /**
-     * Registrando as rotas
-     * Registering the routes
-     *
-     * @param array $routers
-     * @param KernelInterface $kernel
-     */
-
-
-
+    public function load(App &$app, $args = []);
 }

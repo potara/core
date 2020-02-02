@@ -12,50 +12,40 @@
 namespace Potara\Core\Kernel;
 
 
+use Slim\App;
+
 class KernelMiddleware
 {
     /**
-     * Registrando middlewares
-     * Registering middlewares
+     * @param App $app
      *
-     * @param $modules
-     * @param KernelInterface $kernel
      * @return $this
      */
-    public function loadMiddlewares($modules, Kernel &$kernel)
+    public function load(App &$app)
     {
-        $middlewares = $modules['middleware'];
+        $middlewares = $app->getContainer()
+                           ->get('modules_load')['middleware'];
+
         if (!empty($middlewares)) {
-            /**
-             * Registrando middlewares
-             *
-             * Registering middlewares
-             */
-            array_walk($middlewares, function ($args, $middleware) use ($kernel) {
-                $this->addMiddleware($this->factoryMiddlewares($middleware, $args, $kernel), $kernel);
-            });
+            foreach ($middlewares as $middleware => $args) {
+                $app->add($this->factoryMiddlewares($middleware, $args, $app));
+            }
         }
 
         return $this;
     }
 
+
     /**
-     * Registrando middleware
-     * Registering middleware
+     * @param     $middleware
+     * @param     $args
+     * @param App $app
      *
-     * @param $middleware
-     * @param KernelInterface $kernel
-     * @return $this
+     * @return mixed
      */
-    public function addMiddleware($middleware, Kernel &$kernel)
+    protected function factoryMiddlewares($middleware, $args, App &$app)
     {
-        $kernel->app->add($middleware);
-        return $this;
-    }
 
-
-    protected function factoryMiddlewares($middleware, $args, Kernel &$kernel)
-    {
         /**
          * Se não existe argumentos, registre o middleware
          *
@@ -63,16 +53,18 @@ class KernelMiddleware
          */
         if (empty($args)) {
             return $middleware;
-        } else {
+        }
+        else {
             if (is_array($args)) {
-                return new $middleware($kernel->getContainer(), $args);
-            } elseif (class_exists($args)) {
+                return new $middleware($app, $args);
+            }
+            elseif (class_exists($args)) {
                 /**
                  * É um objeto e o arquivo existe, entçao carregue o arquivo e chame o __invoke
                  *
                  * It is an object and the fike exists, then load the file and call __invoke
                  */
-                return new $middleware((new $args)($kernel->app));
+                return new $middleware((new $args)($app));
             }
         }
     }

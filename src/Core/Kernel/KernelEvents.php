@@ -12,30 +12,26 @@
 namespace Potara\Core\Kernel;
 
 
+use Slim\App;
+
 class KernelEvents
 {
     /**
-     * @param $modules
-     * @param KernelInterface $kernel
+     * @param App $app
+     *
      * @return $this
-     * @throws ContainerException
      */
-    public function loadEvents($modules, Kernel &$kernel)
+    public function load(App &$app)
     {
-        $events = $modules['event'];
-        if (!empty($events)) {
-            $container = $kernel->getContainer();
+        $events = $app->getContainer()
+                      ->get('modules_load')['event'];
 
-            /**
-             * O provider de eventos está registrado?
-             * Is the event provider registred?
-             */
-            if (!empty($container->get('p_events'))) {
-                foreach ($events as $event => $args) {
-                    $event::load($container, $container->get('p_events'), $args);
-                }
+        if (!empty($events)) {
+            foreach ($events as $event => $args) {
+                (new $event())->load($app, $args);
             }
         }
+
         return $this;
     }
 }

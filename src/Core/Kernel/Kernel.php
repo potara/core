@@ -11,6 +11,10 @@
 namespace Potara\Core\Kernel;
 
 use DI\Bridge\Slim\Bridge as SlimBridge;
+use Potara\Core\Crud\ConfigModuleInterface;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
 
 class Kernel
 {
@@ -24,11 +28,144 @@ class Kernel
         $this->app->getContainer()
                   ->set('kernel-conf', $kernelConf);
 
-        (new KernelModules())->load($this->app);
-        (new KernelProvider())->load($this->app);
-        (new KernelEvents())->load($this->app);
-        (new KernelMiddleware())->load($this->app);
-        (new KernelRouter())->load($this->app);
+        $loadedModules = $this->loadModules($kernelConf);
+
+        $sequenceRegister = ['provider', 'event', 'middleware', 'router'];
+
+        array_walk($sequenceRegister, function ($category) use (&$loadedModules)
+        {
+            array_walk($loadedModules[$category], function ($args, $classname) use (&$category)
+            {
+
+                switch ($category) {
+                    case 'provider':
+                        (new $classname())->load($this->app, $args);
+                        break;
+
+                    case 'event':
+                        $this->app->add(new $classname($this->app, $args));
+                        break;
+
+                    case 'middleware':
+                        $prepareArgs = !is_array($args) && class_exists($args) ? new $args() : $args;
+                        $this->app->add(new $classname($this->app, $prepareArgs));
+                        break;
+
+                    case 'router':
+                        $this->factoryRouter($args, $classname);
+                        break;
+                }
+            });
+        });
+
+    }
+
+    /**
+     * @param KernelConf $kernelConf
+     *
+     * @return array
+     */
+    public function loadModules(KernelConf $kernelConf) : array
+    {
+
+        $cacheFile = $kernelConf->cache . $kernelConf->cache_module_file;
+
+        $reloadModules = true;
+        if (!$kernelConf->ignore_cache_module) {
+            if ($kernelConf->cache_module) {
+                if (file_exists($cacheFile)) {
+                    $listModulesEnable = Yaml::parseFile($cacheFile);
+                    $reloadModules     = false;
+                }
+            }
+        }
+
+        if ($reloadModules) {
+            $listModulesConfig = $this->findConfigModule($kernelConf->modules_path, $kernelConf->modules, ucfirst($kernelConf->modules));
+
+            $listModulesEnable = array_reduce($listModulesConfig, function ($result, $confModule)
+            {
+                /** @var ConfigModuleInterface $confModule */
+                if ($confModule::isEnable()) {
+                    $result = array_merge_recursive($result, $confModule::getConf());
+                }
+
+                return $result;
+            }, []);
+
+
+            if ($kernelConf->cache_module) {
+                /**
+                 * Salvando dados em cache
+                 *
+                 * Saving data in cache
+                 */
+                $yamlContent = Yaml::dump($listModulesEnable);
+                file_put_contents($cacheFile, $yamlContent);
+            }
+
+        }
+
+
+        $this->app->getContainer()
+                  ->set("modules_load", $listModulesEnable);
+
+        return $listModulesEnable;
+
+    }
+
+    /**
+     * Localiza o arquivo de configuração do módulo e converte em namespace
+     *
+     * Locates the module configuration file and converts namespace
+     *
+     * @param      $dir
+     * @param      $flag
+     * @param null $prefix
+     *
+     * @return array
+     */
+    protected function findConfigModule($dir, $flag, $prefix = null)
+    {
+
+        $filesConfigModule = (new Finder())->name('ConfigModule.php')
+                                           ->in($dir);
+
+        return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag)
+        {
+
+            if (preg_match_all("%{$flag}\/(.*)%", $file->getPathname(), $mathFile)) {
+
+                $namespace = "\\{$prefix}\\" . str_replace(['.php', '/'], ['', "\\"], current($mathFile[1]));
+
+                if (class_exists($namespace)) {
+                    $result[] = $namespace;
+                }
+            };
+            return $result;
+        }, []);
+    }
+
+    /**
+     * @param $routerClass
+     * @param $routerName
+     */
+    protected function factoryRouter($routerClass, $routerName) : void
+    {
+        /**
+         * Se $routerClass for um array, reinicie o processo, caso não, crie o crupo de rotas
+         * If $routerClass for an array, restart the process, if no, create the route group
+         */
+        if (is_array($routerClass)) {
+            self::factoryRouter($routerClass);
+        }
+        else {
+            $nameRouter = "/";
+            if ($routerName != '') {
+                $nameRouter .= $routerName;
+            }
+            $this->app->group($nameRouter, $routerClass);
+        }
 
     }
 }

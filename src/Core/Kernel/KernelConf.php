@@ -71,21 +71,20 @@ class KernelConf extends AbstractEntity
     {
         $documentRoot = $_SERVER['DOCUMENT_ROOT'];
         $storage      = "{$documentRoot}/../storage/";
-
-        $confFinal = array_replace([
+        $modules      = "app";
+        $confFinal    = [
             'root'                => $documentRoot,
             'conf'                => $documentRoot . "/../conf/",
             'storage'             => $storage,
             'log'                 => $storage . "log/",
             'cache'               => $storage . "cache/",
-            'modules'             => "app",
-            'modules_path'        => $documentRoot . "/../app",
-            'cache_module'        => true,
-            'ignore_cache_module' => false,
+            'modules'             => $modules,
+            'modules_path'        => $documentRoot . "/../{$modules}",
+            'cache_module'        => is_bool($conf['cache_module']) ? $conf['cache_module'] : true,
+            'ignore_cache_module' => is_bool($conf['ignore_cache_module']) ? $conf['ignore_cache_module'] : false,
             'cache_module_file'   => 'modules.yml'
-        ], $conf);
+        ];
 
-        $confFinal['modules'] = empty($confFinal['modules']) ? 'app' : $confFinal['modules'];
         parent::__construct($confFinal);
     }
 }

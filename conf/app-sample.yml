@@ -1,0 +1,9 @@
+swiftmailer:
+  entity: '\Potara\Core\Provider\Swiftmailer\SwiftmailerEntity'
+  host: localhost
+  port: 25
+  encryption:
+  username:
+  password:
+  auth:
+  stream_options: []

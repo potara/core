@@ -35,11 +35,7 @@
     "symfony/event-dispatcher": "^5.0",
     "slim/twig-view": "3.0.0"
   },
-  "bin": [
-    "bin/potara"
-  ],
   "config": {
-    "bin-dir": "bin/",
     "optimize-autoloader": true,
     "preferred-install": "dist"
   }

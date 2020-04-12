@@ -1,7 +1,0 @@
-provider:
-    Potara\Core\Provider\ErrorHandlerProvider: {  }
-    Potara\Core\Provider\TwigProvider: {  }
-middleware: {  }
-router:
-    '': App\Index\Router\IndexRouter
-event: {  }

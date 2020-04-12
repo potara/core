@@ -15,7 +15,8 @@ require_once __DIR__ . './../vendor/autoload.php';
 use Potara\Core\Kernel\Kernel;
 
 $kernelConf = [
-    'cache_module' => false
+    'cache_module' => false,
+    'ignore_cache_module'=>false
 ];
 
 $app = (new Kernel($kernelConf))->app;

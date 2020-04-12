@@ -11,7 +11,9 @@
 namespace Potara\Core\Kernel;
 
 
+use phpDocumentor\Reflection\Type;
 use Potara\Core\Crud\AbstractEntity;
+use Symfony\Component\Yaml\Yaml;
 
 class KernelConf extends AbstractEntity
 {
@@ -66,26 +68,64 @@ class KernelConf extends AbstractEntity
      */
     public $cache_module_file;
 
+    /**
+     * @var type=string
+     */
+    public $conf_file;
+
+    public $conf_data;
 
     public function __construct($conf = [])
     {
         $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-        $storage      = "{$documentRoot}/../storage/";
+        $storagePath  = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR;
+        $confPath     = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR;
+        $modules      = "app";
+        $modulesPath  = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $modules;
 
-        $confFinal = array_replace([
+        $confFinal    = [
             'root'                => $documentRoot,
-            'conf'                => $documentRoot . "/../conf/",
-            'storage'             => $storage,
-            'log'                 => $storage . "log/",
-            'cache'               => $storage . "cache/",
-            'modules'             => "app",
-            'modules_path'        => $documentRoot . "/../app",
-            'cache_module'        => true,
-            'ignore_cache_module' => false,
-            'cache_module_file'   => 'modules.yml'
-        ], $conf);
+            'conf'                => $confPath,
+            'conf_file'           => !empty($conf['conf_file']) ? $conf['conf_file'] : $confPath . 'app.yml',
+            'conf_data'           => [],
+            'storage'             => $storagePath,
+            'log'                 => $storagePath . "log" . DIRECTORY_SEPARATOR,
+            'cache'               => $storagePath . "cache" . DIRECTORY_SEPARATOR,
+            'modules'             => $modules,
+            'modules_path'        => $modulesPath,
+            'cache_module'        => is_bool($conf['cache_module']) ? $conf['cache_module'] : true,
+            'ignore_cache_module' => is_bool($conf['ignore_cache_module']) ? $conf['ignore_cache_module'] : false,
+            'cache_module_file'   => 'modules.yml',
 
-        $confFinal['modules'] = empty($confFinal['modules']) ? 'app' : $confFinal['modules'];
+        ];
+
         parent::__construct($confFinal);
+        $this->loadConfFile();
+
+    }
+
+    protected function loadConfFile()
+    {
+        if (file_exists($this->conf_file)) {
+            $readConfFile = Yaml::parseFile($this->conf_file);
+
+            if (!empty($readConfFile) && is_array($readConfFile)) {
+                array_walk($readConfFile, function ($data, $item)
+                {
+                    $entity                 = !empty($data['entity']) ? $data['entity'] : null;
+                    $this->conf_data[$item] = class_exists($entity) ? new $entity($data) : $data;
+                });
+            }
+        }
+    }
+
+    /**
+     * @param null $key
+     *
+     * @return mixed
+     */
+    public function getConf($key = null)
+    {
+        return is_null($key) ? $this->conf_data : $this->conf_data[$key];
     }
 }

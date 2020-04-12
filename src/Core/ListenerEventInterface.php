@@ -8,22 +8,13 @@
  * @license   https://github.com/potara/core/blob/master/LICENSE (MIT License)
  */
 
-namespace Potara\Core\Provider;
+namespace Potara\Core;
 
 
-use Slim\App;
+use DI\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class EventProvider implements ProviderInerface
+interface ListenerEventInterface
 {
-
-    public function load(App &$app, $args = [])
-    {
-
-        $app->getContainer()
-            ->set('event_dispatcher', function ()
-            {
-                return new EventDispatcher();
-            });
-    }
+    public function load(Container &$container, EventDispatcher &$eventDispatcher, $args = []);
 }

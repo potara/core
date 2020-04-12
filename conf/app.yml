@@ -1,0 +1,9 @@
+swiftmailer:
+  entity: '\Potara\Core\Provider\Swiftmailer\SwiftmailerEntity'
+  host: smtp.mailtrap.io
+  port: 2525
+  encryption: tls
+  username: eb669ba0ae6f06
+  password: f48244dbd4201c
+  auth: login
+  stream_options: []

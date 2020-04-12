@@ -25,17 +25,25 @@ class Kernel
     {
         $this->app  = SlimBridge::create();
         $kernelConf = new KernelConf($conf);
-        $this->app->getContainer()
-                  ->set('kernel-conf', $kernelConf);
+        $container  = $this->app->getContainer();
+        $container->set('kernel-conf', $kernelConf);
 
         $loadedModules = $this->loadModules($kernelConf);
 
-        $sequenceRegister = ['provider', 'event', 'middleware', 'router'];
+        $sequenceRegister = [
+            'provider',
+            'event',
+            'middleware',
+            'router'
+        ];
+        $eventDispatcher  = null;
 
-        array_walk($sequenceRegister, function ($category) use (&$loadedModules)
-        {
-            array_walk($loadedModules[$category], function ($args, $classname) use (&$category)
-            {
+        array_walk($sequenceRegister, function ($category) use (&$loadedModules, &$container, &$eventDispatcher) {
+            if ($container->has('event_dispatcher')) {
+                $eventDispatcher = $container->get('event_dispatcher');
+            }
+
+            array_walk($loadedModules[$category], function ($args, $classname) use (&$category, &$container, &$eventDispatcher) {
 
                 switch ($category) {
                     case 'provider':
@@ -43,7 +51,7 @@ class Kernel
                         break;
 
                     case 'event':
-                        $this->app->add(new $classname($this->app, $args));
+                        (new $classname())->load($container, $eventDispatcher, $args);
                         break;
 
                     case 'middleware':
@@ -65,7 +73,7 @@ class Kernel
      *
      * @return array
      */
-    public function loadModules(KernelConf $kernelConf) : array
+    public function loadModules(KernelConf $kernelConf):array
     {
 
         $cacheFile = $kernelConf->cache . $kernelConf->cache_module_file;
@@ -83,8 +91,7 @@ class Kernel
         if ($reloadModules) {
             $listModulesConfig = $this->findConfigModule($kernelConf->modules_path, $kernelConf->modules, ucfirst($kernelConf->modules));
 
-            $listModulesEnable = array_reduce($listModulesConfig, function ($result, $confModule)
-            {
+            $listModulesEnable = array_reduce($listModulesConfig, function ($result, $confModule) {
                 /** @var ConfigModuleInterface $confModule */
                 if ($confModule::isEnable()) {
                     $result = array_merge_recursive($result, $confModule::getConf());
@@ -107,8 +114,7 @@ class Kernel
         }
 
 
-        $this->app->getContainer()
-                  ->set("modules_load", $listModulesEnable);
+        $this->app->getContainer()->set("modules_load", $listModulesEnable);
 
         return $listModulesEnable;
 
@@ -128,15 +134,19 @@ class Kernel
     protected function findConfigModule($dir, $flag, $prefix = null)
     {
 
-        $filesConfigModule = (new Finder())->name('ConfigModule.php')
-                                           ->in($dir);
+        $filesConfigModule = (new Finder())->name('ConfigModule.php')->in($dir);
 
-        return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag)
-        {
+        return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag) {
 
             if (preg_match_all("%{$flag}\/(.*)%", $file->getPathname(), $mathFile)) {
 
-                $namespace = "\\{$prefix}\\" . str_replace(['.php', '/'], ['', "\\"], current($mathFile[1]));
+                $namespace = "\\{$prefix}\\" . str_replace([
+                        '.php',
+                        '/'
+                    ], [
+                        '',
+                        "\\"
+                    ], current($mathFile[1]));
 
                 if (class_exists($namespace)) {
                     $result[] = $namespace;
@@ -150,7 +160,7 @@ class Kernel
      * @param $routerClass
      * @param $routerName
      */
-    protected function factoryRouter($routerClass, $routerName) : void
+    protected function factoryRouter($routerClass, $routerName):void
     {
         /**
          * Se $routerClass for um array, reinicie o processo, caso não, crie o crupo de rotas

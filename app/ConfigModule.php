@@ -24,10 +24,14 @@ class ConfigModule implements ConfigModuleInterface
         return [
             'provider'   => [
                 \Potara\Core\Provider\ErrorHandlerProvider::class => [],
+                \Potara\Core\Provider\EventProvider::class        => [],
                 \Potara\Core\Provider\TwigProvider::class         => [],
             ],
             'middleware' => [
                 \Potara\Core\Middleware\TrailingSlash::class => []
+            ],
+            'event'      => [
+                \Potara\Core\Provider\Swiftmailer\SwiftmailerListenerEvents::class => []
             ]
         ];
     }

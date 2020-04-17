@@ -51,14 +51,16 @@ class SwiftmailerEntity extends AbstractEntity
 
         parent::__construct($conf);
 
-        $this->transport = new \Swift_SmtpTransport($this->host, $this->port, $this->encryption);
-        empty($this->username) ? : $this->transport->setUsername($this->username);
-        empty($this->password) ? : $this->transport->setPassword($this->password);
-        empty($this->auth) ? : $this->transport->setAuthMode($this->auth);
-        empty($this->stream_options) ? : $this->transport->setStreamOptions($this->stream_options);
+        if (class_exists(\Swift_SmtpTransport::class) && class_exists(\Swift_Mailer::class)) {
+            $this->transport = new \Swift_SmtpTransport($this->host, $this->port, $this->encryption);
+            empty($this->username) ?: $this->transport->setUsername($this->username);
+            empty($this->password) ?: $this->transport->setPassword($this->password);
+            empty($this->auth) ?: $this->transport->setAuthMode($this->auth);
+            empty($this->stream_options) ?: $this->transport->setStreamOptions($this->stream_options);
 
-        $this->mailer  = new \Swift_Mailer($this->transport);
-        $this->message = new SwiftmailerMessage();;
+            $this->mailer  = new \Swift_Mailer($this->transport);
+            $this->message = new SwiftmailerMessage();;
+        }
     }
 
     public function send()

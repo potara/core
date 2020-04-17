@@ -26,6 +26,7 @@ class ConfigModule implements ConfigModuleInterface
                 \Potara\Core\Provider\ErrorHandlerProvider::class => [],
 //                \Potara\Core\Provider\EventProvider::class        => [],
                 \Potara\Core\Provider\TwigProvider::class         => [],
+                \Potara\Core\Provider\Doctrine\DoctrineProvider::class         => [],
             ],
             'middleware' => [
                 \Potara\Core\Middleware\TrailingSlash::class => []

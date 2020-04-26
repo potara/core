@@ -34,14 +34,16 @@ class AbstractRepository extends DoctrineRepository
 
     /**
      * @param        $value
-     * @param string $input
+     * @param string $inputWhere
+     * @param array  $inputSelect
      *
      * @return mixed
      * @throws DBALException
      */
-    public function find($value, $input = 'id')
+    public function find($value, $inputWhere = 'id', $inputSelect = [])
     {
-        $query = $this->conn->query("SELECT * FROM {$this->table} WHERE {$input}={$value}");
+        $inputSelect = is_array($inputSelect) ? implode(", ", $inputSelect) : '*';
+        $query       = $this->conn->query("SELECT {$inputSelect} FROM {$this->table} WHERE {$inputWhere}='{$value}'");
         $this->setFetchMode($query);
         return $query->fetch();
     }
@@ -346,12 +348,11 @@ class AbstractRepository extends DoctrineRepository
 
     /**
      * @param array $where
-     * @param array $data
      *
      * @return Statement|int
      * @throws \Exception
      */
-    public function delete(array $where, array $data = [])
+    public function delete(array $where)
     {
         try {
             $queryBuilder = $this->conn->createQueryBuilder();
@@ -365,7 +366,7 @@ class AbstractRepository extends DoctrineRepository
                 }
             }
 
-            $queryBuilder->setParameters($where + $data);
+            $queryBuilder->setParameters($where);
 
             return $queryBuilder->execute();
 

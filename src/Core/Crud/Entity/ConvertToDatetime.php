@@ -27,7 +27,7 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
     /**
      * @param $value
      */
-    public function toPHP(&$value): void
+    public function toPHP(&$value) : void
     {
         if (!is_null($value)) {
             $newDateTime = \DateTime::createFromFormat($this->options['format'], $value);
@@ -41,8 +41,18 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
     /**
      * @param $value
      */
-    public function toDB(&$value): void
+    public function toDB(&$value) : void
     {
+        $action = $this->options['action'];
+
+        if ($action == 'start') {
+            $value = is_null($value) ? (new \DateTime('now'))->format($this->options['format']) : $value;
+        }
+        if ($action == 'reload') {
+            $value = new \DateTime('now');
+        }
+
         $value = $value instanceof \DateTime ? $value->format($this->options['format']) : $value;
+
     }
 }

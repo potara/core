@@ -15,6 +15,7 @@ namespace Potara\Core\Crud\Repository;
 use Doctrine\DBAL\Cache\CacheException;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Potara\Core\Provider\Doctrine\DoctrineRepository;
 
@@ -43,6 +44,21 @@ class AbstractRepository extends DoctrineRepository
         $query = $this->conn->query("SELECT * FROM {$this->table} WHERE {$input}={$value}");
         $this->setFetchMode($query);
         return $query->fetch();
+    }
+
+    /**
+     * @param null  $limit
+     * @param int   $page
+     * @param array $options
+     *
+     * @return object
+     * @throws \Exception
+     */
+    public function findByPage($limit = null, $page = 0, $options = [])
+    {
+        $where   = !empty($options['where']) ? $options['where'] : [];
+        $orderBy = !empty($options['order_by']) ? $options['order_by'] : ['id' => 'DESC'];
+        return $this->findBy($where, $orderBy, $limit, $page, $options);
     }
 
     /**
@@ -260,5 +276,101 @@ class AbstractRepository extends DoctrineRepository
             "total"   => $total_pages,
             "results" => $total_results,
         ];
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return bool|string
+     * @throws \Exception
+     */
+    public function insert(array $data = [])
+    {
+        try {
+            $entity       = new $this->entity($data);
+            $entityDataDb = $entity->toSave()->toArray();
+            unset($entityDataDb['id']);
+
+            $queryBuilder = $this->conn->createQueryBuilder();
+            $queryBuilder->insert($this->table);
+
+            foreach (array_keys($entityDataDb) as $key) {
+                $queryBuilder->setValue($key, ":{$key}");
+            }
+            $queryBuilder->setParameters($entityDataDb);
+
+            $saveQuery = $queryBuilder->execute();
+
+            return $saveQuery ? $this->conn->lastInsertId() : false;
+
+        } catch (\Exception $e) {
+            throw new \Exception($this->entity . ": " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param array $where
+     * @param array $data
+     *
+     * @return Statement|int
+     * @throws \Exception
+     */
+    public function update(array $where, array $data = [])
+    {
+        try {
+            $entity       = new $this->entity($data);
+            $entityDataDb = $entity->toSave()->toArray();
+
+            $queryBuilder = $this->conn->createQueryBuilder();
+            $queryBuilder->update($this->table);
+
+            foreach (array_keys($where) as $whereKey) {
+                if (empty($queryBuilder->getQueryPart('where'))) {
+                    $queryBuilder->where("{$whereKey} = :{$whereKey}");
+                } else {
+                    $queryBuilder->andWhere("{$whereKey} = :{$whereKey}");
+                }
+            }
+
+            foreach (array_keys($entityDataDb) as $entityKey) {
+                $queryBuilder->set($entityKey, ":{$entityKey}");
+            }
+            $queryBuilder->setParameters($where + $entityDataDb);
+
+            return $queryBuilder->execute();
+
+        } catch (\Exception $e) {
+            throw new \Exception($this->entity . ": " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param array $where
+     * @param array $data
+     *
+     * @return Statement|int
+     * @throws \Exception
+     */
+    public function delete(array $where, array $data = [])
+    {
+        try {
+            $queryBuilder = $this->conn->createQueryBuilder();
+            $queryBuilder->delete($this->table);
+
+            foreach (array_keys($where) as $whereKey) {
+                if (empty($queryBuilder->getQueryPart('where'))) {
+                    $queryBuilder->where("{$whereKey} = :{$whereKey}");
+                } else {
+                    $queryBuilder->andWhere("{$whereKey} = :{$whereKey}");
+                }
+            }
+
+            $queryBuilder->setParameters($where + $data);
+
+            return $queryBuilder->execute();
+
+        } catch (\Exception $e) {
+            throw new \Exception($this->entity . ": " . $e->getMessage());
+        }
     }
 }

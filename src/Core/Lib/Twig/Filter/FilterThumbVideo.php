@@ -19,6 +19,11 @@ class FilterThumbVideo
         return 'thumb_video';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($code, $origin)
     {
         switch ($origin) {

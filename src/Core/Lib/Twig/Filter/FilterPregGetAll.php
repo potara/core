@@ -19,6 +19,11 @@ class FilterPregGetAll
         return 'preg_get_all';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param     $value
      * @param     $pattern

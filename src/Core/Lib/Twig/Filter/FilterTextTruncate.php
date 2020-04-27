@@ -12,31 +12,33 @@
 namespace Potara\Core\Lib\Twig\Filter;
 
 
-class FilterPregGet
+class FilterTextTruncate
 {
     static public function getName()
     {
-        return 'preg_get';
+        return 'text_truncate';
     }
 
     static public function getOptions()
     {
-        return [];
+        return ['pre_escape' => 'html', 'is_safe' => ['html']];
     }
 
     /**
-     * @param     $value
-     * @param     $pattern
-     * @param int $group
+     * Cut of text if it's to long.
      *
-     * @return mixed|null
+     * @param        $value
+     * @param        $length
+     * @param string $replace
+     *
+     * @return string|null
      */
-    static public function load($value, $pattern, $group = 0)
+    static public function load($value, $length, $replace = '...')
     {
         if (!isset($value)) {
             return null;
         }
 
-        return preg_match($pattern, $value, $matches) && isset($matches[$group]) ? $matches[$group] : null;
+        return strlen($value) <= $length ? $value : substr($value, 0, $length - strlen($replace)) . $replace;
     }
 }

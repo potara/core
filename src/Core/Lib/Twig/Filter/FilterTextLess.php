@@ -12,31 +12,34 @@
 namespace Potara\Core\Lib\Twig\Filter;
 
 
-class FilterPregGet
+class FilterTextLess
 {
     static public function getName()
     {
-        return 'preg_get';
+        return 'text_less';
     }
 
     static public function getOptions()
     {
-        return [];
+        return ['pre_escape' => 'html', 'is_safe' => ['html']];
     }
 
     /**
-     * @param     $value
-     * @param     $pattern
-     * @param int $group
+     * Cut of text on a pagebreak.
      *
-     * @return mixed|null
+     * @param        $value
+     * @param string $replace
+     * @param string $break
+     *
+     * @return string|null
      */
-    static public function load($value, $pattern, $group = 0)
+    static public function load($value, $replace = '...', $break = '<!-- pagebreak -->')
     {
         if (!isset($value)) {
             return null;
         }
 
-        return preg_match($pattern, $value, $matches) && isset($matches[$group]) ? $matches[$group] : null;
+        $pos = stripos($value, $break);
+        return $pos === false ? $value : substr($value, 0, $pos) . $replace;
     }
 }

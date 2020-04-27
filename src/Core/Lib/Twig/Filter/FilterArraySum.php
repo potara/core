@@ -19,6 +19,11 @@ class FilterArraySum
         return 'array_sum';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param $value
      *

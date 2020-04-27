@@ -19,6 +19,11 @@ class FunctionDump
         return 'dump';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($value)
     {
         echo '<pre>';

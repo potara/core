@@ -35,6 +35,11 @@ use Potara\Core\Lib\Twig\Filter\FilterPregQuote;
 use Potara\Core\Lib\Twig\Filter\FilterPregReplace;
 use Potara\Core\Lib\Twig\Filter\FilterPregSplit;
 use Potara\Core\Lib\Twig\Filter\FilterSerialize;
+use Potara\Core\Lib\Twig\Filter\FilterTextLess;
+use Potara\Core\Lib\Twig\Filter\FilterTextLine;
+use Potara\Core\Lib\Twig\Filter\FilterTextLinkify;
+use Potara\Core\Lib\Twig\Filter\FilterTextParagraph;
+use Potara\Core\Lib\Twig\Filter\FilterTextTruncate;
 use Potara\Core\Lib\Twig\Filter\FilterThumbVideo;
 use Potara\Core\Lib\Twig\Filter\FilterThumbVideoHtml5;
 use Potara\Core\Lib\Twig\Filter\FilterUnserialize;
@@ -73,11 +78,15 @@ class TwigExtraExtensions extends AbstractExtension
 
             //Date filters
             FilterDateLocalDate::class, FilterDateLocalTime::class, FilterDateLocalDateTime::class, FilterDateDuration::class,
-            FilterDateAge::class
+            FilterDateAge::class,
+
+            //Text filters
+            FilterTextLess::class, FilterTextLine::class, FilterTextLinkify::class, FilterTextParagraph::class,
+            FilterTextTruncate::class,
         ];
 
         return array_reduce($listFilter, function ($result, $filter) {
-            $result[] = new TwigFilter($filter::getName(), [$filter, 'load']);
+            $result[] = new TwigFilter($filter::getName(), [$filter, 'load'], $filter::getOptions());
             return $result;
         }, []);
     }
@@ -92,7 +101,7 @@ class TwigExtraExtensions extends AbstractExtension
         ];
 
         return array_reduce($listFunctions, function ($result, $function) {
-            $result[] = new TwigFunction($function::getName(), [$function, 'load']);
+            $result[] = new TwigFunction($function::getName(), [$function, 'load'], $function::getOptions());
             return $result;
         }, []);
     }

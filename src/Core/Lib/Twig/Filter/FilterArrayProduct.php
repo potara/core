@@ -19,6 +19,11 @@ class FilterArrayProduct
         return 'array_product';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param $value
      *

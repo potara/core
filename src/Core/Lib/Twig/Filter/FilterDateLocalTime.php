@@ -19,6 +19,11 @@ class FilterDateLocalTime
         return 'localtime';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+    
     /**
      * @param        $date
      * @param string $format

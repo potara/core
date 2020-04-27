@@ -19,6 +19,11 @@ class FilterArrayHtmlAttr
         return 'html_attr';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($value, $numericPrefix = null, $argSeparator = null, $encType = PHP_QUERY_RFC1738)
     {
         return !isset($value) ? null : http_build_query($value, $numericPrefix, $argSeparator, $encType);

@@ -19,6 +19,11 @@ class FilterPregFilter
         return 'preg_filter';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param        $subject
      * @param        $pattern

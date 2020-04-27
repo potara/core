@@ -19,6 +19,10 @@ class FilterDateAge
         return 'dateage';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
 
     static public function load($value)
     {

@@ -19,6 +19,16 @@ class FilterUnserialize
         return 'unserialize';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
+    /**
+     * @param null $value
+     *
+     * @return array|mixed
+     */
     static public function load($value = null)
     {
         return !empty($value) && is_string($value) ? unserialize($value) : [];

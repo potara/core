@@ -19,6 +19,11 @@ class FilterDateDuration
         return 'dateduration';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param          $value
      * @param string[] $units

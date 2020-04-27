@@ -19,6 +19,11 @@ class FilterAsArray
         return 'as_array';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+    
     /**
      * @param $value
      *

@@ -19,6 +19,11 @@ class FilterSerialize
         return 'serialize';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($value = [])
     {
         return serialize($value);

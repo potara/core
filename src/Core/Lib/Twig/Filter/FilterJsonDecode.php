@@ -19,6 +19,11 @@ class FilterJsonDecode
         return 'json_decode';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     /**
      * @param string $value
      * @param bool   $assoc

@@ -19,6 +19,11 @@ class FunctionExport
         return 'export';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($value)
     {
         echo '<pre>';

@@ -12,11 +12,11 @@
 namespace Potara\Core\Lib\Twig\Filter;
 
 
-class FilterPregReplace
+class FilterTextLine
 {
     static public function getName()
     {
-        return 'preg_replace';
+        return 'text_line';
     }
 
     static public function getOptions()
@@ -25,15 +25,21 @@ class FilterPregReplace
     }
 
     /**
-     * @param        $subject
-     * @param        $pattern
-     * @param string $replacement
-     * @param int    $limit
+     * Get a single line
      *
-     * @return string|string[]|null
+     * @param     $value
+     * @param int $line
+     *
+     * @return mixed|string|null
      */
-    static public function load($subject, $pattern, $replacement = '', $limit = -1)
+    static public function load($value, $line = 1)
     {
-        return !isset($subject) ? null : preg_replace($pattern, $replacement, $subject, $limit);
+        if (!isset($value)) {
+            return null;
+        }
+
+        $lines = explode("\n", $value);
+
+        return isset($lines[$line - 1]) ? $lines[$line - 1] : null;
     }
 }

@@ -19,6 +19,11 @@ class FilterArrayValues
         return 'array_values';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+    
     /**
      * @param $value
      *

@@ -19,6 +19,11 @@ class FilterJsonEncode
         return 'json_encode';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+    
     /**
      * @param array $value
      *

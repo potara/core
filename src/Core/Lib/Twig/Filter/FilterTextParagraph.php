@@ -12,28 +12,31 @@
 namespace Potara\Core\Lib\Twig\Filter;
 
 
-class FilterPregReplace
+class FilterTextParagraph
 {
     static public function getName()
     {
-        return 'preg_replace';
+        return 'text_paragraph';
     }
 
     static public function getOptions()
     {
-        return [];
+        return ['pre_escape' => 'html', 'is_safe' => ['html']];
     }
 
     /**
-     * @param        $subject
-     * @param        $pattern
-     * @param string $replacement
-     * @param int    $limit
+     * Add paragraph and line breaks to text.
      *
-     * @return string|string[]|null
+     * @param $value
+     *
+     * @return string|null
      */
-    static public function load($subject, $pattern, $replacement = '', $limit = -1)
+    static public function load($value)
     {
-        return !isset($subject) ? null : preg_replace($pattern, $replacement, $subject, $limit);
+        if (!isset($value)) {
+            return null;
+        }
+
+        return '<p>' . preg_replace(['~\n(\s*)\n\s*~', '~(?<!</p>)\n\s*~'], ["</p>\n\$1<p>", "<br>\n"], trim($value)) . '</p>';
     }
 }

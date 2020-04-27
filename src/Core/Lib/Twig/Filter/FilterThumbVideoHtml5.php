@@ -19,6 +19,11 @@ class FilterThumbVideoHtml5
         return 'thumb_video_html5';
     }
 
+    static public function getOptions()
+    {
+        return [];
+    }
+
     static public function load($code, $origin, $class = null, $alt = null)
     {
         $imageList = FilterThumbVideo::load($code, $origin);

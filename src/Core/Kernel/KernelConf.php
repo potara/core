@@ -19,6 +19,11 @@ class KernelConf extends AbstractEntity
 {
 
     /**
+     * @var type=bolean
+     */
+    public $debug;
+
+    /**
      * @var type=string
      */
     public $root;
@@ -69,6 +74,11 @@ class KernelConf extends AbstractEntity
     public $cache_module_file;
 
     /**
+     * @var type=bolean
+     */
+    public $cache_twig;
+
+    /**
      * @var type=string
      */
     public $conf_file;
@@ -83,7 +93,8 @@ class KernelConf extends AbstractEntity
         $modules      = "app";
         $modulesPath  = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $modules;
 
-        $confFinal    = [
+        $confFinal = [
+            'debug'               => !empty($conf['debug']) ? (bool) $conf['debug'] : false,
             'root'                => $documentRoot,
             'conf'                => $confPath,
             'conf_file'           => !empty($conf['conf_file']) ? $conf['conf_file'] : $confPath . 'app.yml',
@@ -95,9 +106,10 @@ class KernelConf extends AbstractEntity
             'modules_path'        => $modulesPath,
             'cache_module'        => is_bool($conf['cache_module']) ? $conf['cache_module'] : true,
             'ignore_cache_module' => is_bool($conf['ignore_cache_module']) ? $conf['ignore_cache_module'] : false,
-            'cache_module_file'   => 'modules.yml',
-
+            'cache_module_file'   => 'modules.yml'
         ];
+
+        $confFinal['cache_twig'] = $conf['cache_twig'] ? $confFinal['cache'] . '/twig' : false;
 
         parent::__construct($confFinal);
         $this->loadConfFile();
@@ -110,8 +122,7 @@ class KernelConf extends AbstractEntity
             $readConfFile = Yaml::parseFile($this->conf_file);
 
             if (!empty($readConfFile) && is_array($readConfFile)) {
-                array_walk($readConfFile, function ($data, $item)
-                {
+                array_walk($readConfFile, function ($data, $item) {
                     $entity                 = !empty($data['entity']) ? $data['entity'] : null;
                     $this->conf_data[$item] = class_exists($entity) ? new $entity($data) : $data;
                 });

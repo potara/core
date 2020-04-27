@@ -12,9 +12,9 @@ namespace Potara\Core\Provider;
 
 
 use Potara\Core\Kernel\KernelConf;
+use Potara\Core\Lib\Twig\TwigExtraExtensions;
 use Slim\App;
-use Slim\Views\Twig;
-use Slim\Views\TwigMiddleware;
+use Slim\Views\{Twig, TwigMiddleware};
 
 class TwigProvider implements ProviderInerface
 {
@@ -23,15 +23,22 @@ class TwigProvider implements ProviderInerface
     {
         /** @var KernelConf $kernelConf */
         $kernelConf = $app->getContainer()
-                          ->get('kernel-conf');
+            ->get('kernel-conf');
 
         $app->getContainer()
-            ->set('view', function () use (&$kernelConf)
-            {
-                return Twig::create($kernelConf->modules_path, ['cache' => $kernelConf->cache . '/twig']);
+            ->set('view', function () use (&$kernelConf) {
+
+                $twig = Twig::create($kernelConf->modules_path, [
+                    'degub' => $kernelConf->debug,
+                    'cache' => $kernelConf->cache_twig
+                ]);
+                $twig->addExtension(new TwigExtraExtensions());
+
+                return $twig;
             });
 
         $app->add(TwigMiddleware::createFromContainer($app));
+
         return $this;
     }
 }

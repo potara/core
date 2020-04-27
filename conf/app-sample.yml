@@ -1,3 +1,13 @@
+doctrine:
+  db:
+    driver: 'pdo_mysql'
+    host: 'localhost'
+    port: '3306'
+    user: 'root'
+    password: ''
+    dbname: ''
+    charset: 'utf8mb4'
+
 swiftmailer:
   entity: '\Potara\Core\Provider\Swiftmailer\SwiftmailerEntity'
   host: localhost

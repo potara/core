@@ -21,26 +21,28 @@ class ErrorHandlerProvider implements ProviderInerface
 
     public function load(App &$app, $args = [])
     {
-        // CUSTOM HANDLERS
-        $displayErrorDetails = true;
+        if (!$app->getContainer()->get('kernel-conf')->debug) {
+            // CUSTOM HANDLERS
+            $displayErrorDetails = true;
 
-        $callableResolver = $app->getCallableResolver();
-        $responseFactory  = $app->getResponseFactory();
+            $callableResolver = $app->getCallableResolver();
+            $responseFactory  = $app->getResponseFactory();
 
-        $serverRequestCreator = ServerRequestCreatorFactory::create();
-        $request              = $serverRequestCreator->createServerRequestFromGlobals();
+            $serverRequestCreator = ServerRequestCreatorFactory::create();
+            $request              = $serverRequestCreator->createServerRequestFromGlobals();
 
-        $errorHandler    = new HttpErrorHandler($callableResolver, $responseFactory);
-        $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-        register_shutdown_function($shutdownHandler);
+            $errorHandler    = new HttpErrorHandler($callableResolver, $responseFactory);
+            $shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
+            register_shutdown_function($shutdownHandler);
 
-        ///
-        // Add Routing Middleware
-        $app->addRoutingMiddleware();
+            ///
+            // Add Routing Middleware
+            $app->addRoutingMiddleware();
 
-        // Add Error Handling Middleware
-        $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
-        $errorMiddleware->setDefaultErrorHandler($errorHandler);
-        ////////////////////////////
+            // Add Error Handling Middleware
+            $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
+            $errorMiddleware->setDefaultErrorHandler($errorHandler);
+            ////////////////////////////
+        }
     }
 }

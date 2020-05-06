@@ -17,3 +17,18 @@ swiftmailer:
   password:
   auth:
   stream_options: []
+
+jwt:
+  entity: '\Potara\Core\Provider\Jwt\JwtEntity'
+  secure: false
+  attribute: token
+  header: X-Token
+  regexp: "/(.*)/"
+  path:
+    - '/'
+  ignore:
+    - '/auth'
+  life: 3600
+  refresh: 36000
+  secret: secretkey
+  algorithm: HS384

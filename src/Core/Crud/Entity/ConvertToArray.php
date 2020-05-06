@@ -15,7 +15,7 @@ final class ConvertToArray extends AbstractConvertTo implements ConvertToInterfa
 
     public function toPHP(&$value, $delimitador = ","): void
     {
-        if (is_null($value)) {
+        if (is_null($value) || empty($value)) {
             $value = [];
         } else {
             $newArray = explode($delimitador, $value);

@@ -17,100 +17,164 @@ class DoctrineEntity extends AbstractEntity
 {
     public $conn;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $url;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $driver;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $host;
 
-    /** @var type=integer */
+    /**
+     * @var type=integer
+     */
     public $port;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $user;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $password;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $dbname;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $default_dbname;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $charset;
 
-    /** @var type=array */
+    /**
+     * @var type=array
+     */
     public $options;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $path;
 
-    /** @var type=bolean */
+    /**
+     * @var type=bolean
+     */
     public $memory;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $unix_socket;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_key;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_cert;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_ca;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_capath;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_capher;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $ssl_mode;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $sslrootcert;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $sslcert;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $sslkey;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $sslcrl;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $application_name;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $servicename;
 
-    /** @var type=bolean */
+    /**
+     * @var type=bolean
+     */
     public $service;
 
-    /** @var type=bolean */
+    /**
+     * @var type=bolean
+     */
     public $pooled;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $instancename;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $connectstring;
 
-    /** @var type=bolean */
+    /**
+     * @var type=bolean
+     */
     public $persistent;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $cache;
 
-    /** @var type=array */
+    /**
+     * @var type=array
+     */
     public $cache_options;
 
 
@@ -137,6 +201,7 @@ class DoctrineEntity extends AbstractEntity
         }
 
         parent::__construct($conf);
+        $this->options = !empty($this->options) ? $this->options : null;
 
         $this->conn = \Doctrine\DBAL\DriverManager::getConnection($this->toArray(), $this->options);
         $this->addCache();

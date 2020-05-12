@@ -22,25 +22,39 @@ class SwiftmailerEntity extends AbstractEntity
 
     public $message;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $host;
 
-    /** @var type=integer */
+    /**
+     * @var type=integer
+     */
     public $port;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $encryption;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $username;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $password;
 
-    /** @var type=string */
+    /**
+     * @var type=string
+     */
     public $auth;
 
-    /** @var type=array */
+    /**
+     * @var type=array
+     */
     public $stream_options;
 
     public function __construct($conf = [])

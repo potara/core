@@ -47,6 +47,7 @@ class EntitySample extends AbstractEntity
      * @var type=serialize
      */
     public $serialize;
+
     /**
      * @var type=bolean
      */

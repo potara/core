@@ -22,17 +22,21 @@ class ConfigModule implements ConfigModuleInterface
     public static function getConf() : array
     {
         return [
+            'router'     => [
+                'auth' => \Potara\Core\Provider\Jwt\JwtRouter::class
+            ],
             'provider'   => [
-                \Potara\Core\Provider\ErrorHandlerProvider::class => [],
-//                \Potara\Core\Provider\EventProvider::class        => [],
-                \Potara\Core\Provider\TwigProvider::class         => [],
-                \Potara\Core\Provider\Doctrine\DoctrineProvider::class         => [],
+                \Potara\Core\Provider\ErrorHandlerProvider::class      => [],
+                \Potara\Core\Provider\EventProvider::class             => [],
+                \Potara\Core\Provider\TwigProvider::class              => [],
+                \Potara\Core\Provider\Doctrine\DoctrineProvider::class => [],
+                \Potara\Core\Provider\Jwt\JwtProvider::class           => []
             ],
             'middleware' => [
                 \Potara\Core\Middleware\TrailingSlash::class => []
             ],
             'event'      => [
-//                \Potara\Core\Provider\Swiftmailer\SwiftmailerListenerEvents::class => []
+                \Potara\Core\Provider\Swiftmailer\SwiftmailerListenerEvents::class => []
             ]
         ];
     }

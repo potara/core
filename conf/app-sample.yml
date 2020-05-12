@@ -20,6 +20,7 @@ swiftmailer:
 
 jwt:
   entity: '\Potara\Core\Provider\Jwt\JwtEntity'
+  auth_user: '\Potara\Core\Provider\Jwt\JwtCheckuser'
   secure: false
   attribute: token
   header: X-Token

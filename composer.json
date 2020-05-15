@@ -12,8 +12,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Potara\\": "src/",
-      "App\\": "app/"
+      "Potara\\": "src/"
     }
   },
   "require": {

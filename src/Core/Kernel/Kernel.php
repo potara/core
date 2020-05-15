@@ -40,14 +40,12 @@ class Kernel
 
         array_walk($sequenceRegister, function ($category) use (
             &$loadedModules, &$container, &$eventDispatcher
-        )
-        {
+        ) {
             if ($container->has('event_dispatcher')) {
                 $eventDispatcher = $container->get('event_dispatcher');
             }
 
-            array_walk($loadedModules[$category], function ($args, $classname) use (&$category, &$container, &$eventDispatcher)
-            {
+            array_walk($loadedModules[$category], function ($args, $classname) use (&$category, &$container, &$eventDispatcher) {
 
                 switch ($category) {
                     case 'provider':
@@ -77,8 +75,7 @@ class Kernel
      *
      * @return array
      */
-    public function loadModules(KernelConf $kernelConf)
-    : array
+    public function loadModules(KernelConf $kernelConf) : array
     {
 
         $cacheFile = $kernelConf->cache . $kernelConf->cache_module_file;
@@ -96,8 +93,7 @@ class Kernel
         if ($reloadModules) {
             $listModulesConfig = $this->findConfigModule($kernelConf->modules_path, $kernelConf->modules, ucfirst($kernelConf->modules));
 
-            $listModulesEnable = array_reduce($listModulesConfig, function ($result, $confModule)
-            {
+            $listModulesEnable = array_reduce($listModulesConfig, function ($result, $confModule) {
                 /** @var ConfigModuleInterface $confModule */
                 if ($confModule::isEnable()) {
                     $result = array_merge_recursive($result, $confModule::getConf());
@@ -142,8 +138,7 @@ class Kernel
 
         $filesConfigModule = (new Finder())->name('ConfigModule.php')->in($dir);
 
-        return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag)
-        {
+        return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag) {
 
             if (preg_match_all("%{$flag}\\" . DIRECTORY_SEPARATOR . "(.*)%", $file->getPathname(), $mathFile)) {
 
@@ -168,15 +163,16 @@ class Kernel
      * @param $routerClass
      * @param $routerName
      */
-    protected function factoryRouter($routerClass, $routerName)
-    : void
+    protected function factoryRouter($routerClass, $routerName) : void
     {
         /**
          * Se $routerClass for um array, reinicie o processo, caso não, crie o crupo de rotas
          * If $routerClass for an array, restart the process, if no, create the route group
          */
         if (is_array($routerClass)) {
-            self::factoryRouter($routerClass);
+            array_walk($routerClass, function ($router) use (&$routerName) {
+                self::factoryRouter($router, $routerName);
+            });
         } else {
             $nameRouter = "/";
             if ($routerName != '') {

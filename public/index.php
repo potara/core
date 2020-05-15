@@ -15,10 +15,10 @@ require_once __DIR__ . './../vendor/autoload.php';
 use Potara\Core\Kernel\Kernel;
 
 $kernelConf = [
-    'debug'               => true,
-    'cache_module'        => false,
-    'ignore_cache_module' => false,
-    'cache_twig'          => false
+//    'debug'               => true,
+//    'cache_module'        => false,
+//    'ignore_cache_module' => false,
+//    'cache_twig'          => false
 ];
 
 $app = (new Kernel($kernelConf))->app;

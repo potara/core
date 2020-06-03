@@ -12,6 +12,7 @@ namespace Potara\Core\Kernel;
 
 use DI\Bridge\Slim\Bridge as SlimBridge;
 use Potara\Core\Crud\ConfigModuleInterface;
+use Slim\Routing\RouteCollectorProxy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -160,26 +161,44 @@ class Kernel
     }
 
     /**
-     * @param $routerClass
      * @param $routerName
+     *
+     * @return string
+     */
+    protected function normalizeNameRouter($routerName) : string
+    {
+        return empty($routerName) ? '' : '/' . $routerName;
+    }
+
+    /**
+     * @param                          $routerClass
+     * @param                          $routerName
      */
     protected function factoryRouter($routerClass, $routerName) : void
     {
-        /**
-         * Se $routerClass for um array, reinicie o processo, caso não, crie o crupo de rotas
-         * If $routerClass for an array, restart the process, if no, create the route group
-         */
         if (is_array($routerClass)) {
-            array_walk($routerClass, function ($router) use (&$routerName) {
-                self::factoryRouter($router, $routerName);
+            $this->app->group($this->normalizeNameRouter($routerName), function (RouteCollectorProxy $group) use (&$routerClass) {
+                $this->factoryRouterGroup($group, $routerClass);
             });
         } else {
-            $nameRouter = "/";
-            if ($routerName != '') {
-                $nameRouter .= $routerName;
-            }
-            $this->app->group($nameRouter, $routerClass);
+            $this->app->group($this->normalizeNameRouter($routerName), $routerClass);
         }
+    }
 
+    /**
+     * @param RouteCollectorProxy $group
+     * @param                     $routes
+     */
+    protected function factoryRouterGroup(RouteCollectorProxy &$group, &$routes) : void
+    {
+        array_walk($routes, function (&$routerClass, $routerName) use (&$group) {
+            if (is_array($routerClass)) {
+                $group->group($this->normalizeNameRouter($routerName), function (RouteCollectorProxy $recursiveGroup) use (&$routerClass) {
+                    $this->factoryRouterGroup($recursiveGroup, $routerClass);
+                });
+            } else {
+                $group->group($this->normalizeNameRouter($routerName), $routerClass);
+            }
+        });
     }
 }

@@ -161,27 +161,28 @@ class Kernel
     }
 
     /**
-     * @param $routerName
+     * @param      $routerName
+     * @param bool $isFistRouterLevel
      *
      * @return string
      */
-    protected function normalizeNameRouter($routerName) : string
+    protected function normalizeNameRouter($routerName, $isFistRouterLevel = false) : string
     {
-        return empty($routerName) ? '' : '/' . $routerName;
+        return empty($routerName) ? ($isFistRouterLevel) ? "/" : "" : '/' . $routerName;
     }
 
     /**
-     * @param                          $routerClass
-     * @param                          $routerName
+     * @param $routerClass
+     * @param $routerName
      */
     protected function factoryRouter($routerClass, $routerName) : void
     {
-        if (is_array($routerClass)) {
+        if (!is_array($routerClass)) {
+            $this->app->group($this->normalizeNameRouter($routerName, true), $routerClass);
+        } else {
             $this->app->group($this->normalizeNameRouter($routerName), function (RouteCollectorProxy $group) use (&$routerClass) {
                 $this->factoryRouterGroup($group, $routerClass);
             });
-        } else {
-            $this->app->group($this->normalizeNameRouter($routerName), $routerClass);
         }
     }
 
@@ -192,12 +193,12 @@ class Kernel
     protected function factoryRouterGroup(RouteCollectorProxy &$group, &$routes) : void
     {
         array_walk($routes, function (&$routerClass, $routerName) use (&$group) {
-            if (is_array($routerClass)) {
+            if (!is_array($routerClass)) {
+                $group->group($this->normalizeNameRouter($routerName), $routerClass);
+            } else {
                 $group->group($this->normalizeNameRouter($routerName), function (RouteCollectorProxy $recursiveGroup) use (&$routerClass) {
                     $this->factoryRouterGroup($recursiveGroup, $routerClass);
                 });
-            } else {
-                $group->group($this->normalizeNameRouter($routerName), $routerClass);
             }
         });
     }

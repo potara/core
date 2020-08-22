@@ -25,9 +25,9 @@ class AbstractRepository extends DoctrineRepository
     public $table;
     public $entity;
 
-    public function __construct(&$doctrineEntity, $table, $entity)
+    public function __construct(&$doctrineEntity, $entity)
     {
-        $this->table  = $table;
+        $this->table  = get_class_vars($entity)['_table'];
         $this->entity = $entity;
         parent::__construct($doctrineEntity);
     }
@@ -81,7 +81,7 @@ class AbstractRepository extends DoctrineRepository
             $queryBuilder = $this->conn->createQueryBuilder();
 
             $queryBuilder->select($queryObject->inputSelect)
-                ->from($this->table, $queryObject->fromAlias);
+                         ->from($this->table, $queryObject->fromAlias);
 
             $this
                 ->hydratorLike($queryBuilder, $queryObject)
@@ -118,7 +118,8 @@ class AbstractRepository extends DoctrineRepository
     public function hydratorLike(QueryBuilder &$queryBuilder, EntityRepositoryQuery &$queryObject)
     {
         if ($queryObject->isLike) {
-            array_walk($queryObject->inputSearch, function ($value) use ($queryBuilder) {
+            array_walk($queryObject->inputSearch, function ($value) use ($queryBuilder)
+            {
                 $likeInput = preg_match("%([a-z_]+)\.([a-z_]+)%", $value) ? $value : "{$value}";
 
                 if (empty($queryBuilder->getQueryPart('where'))) {
@@ -146,7 +147,8 @@ class AbstractRepository extends DoctrineRepository
     public function hydratorWhere(QueryBuilder &$queryBuilder, EntityRepositoryQuery &$queryObject)
     {
         if (!empty($queryObject->where)) {
-            array_walk($queryObject->where, function ($value, $index) use ($queryBuilder) {
+            array_walk($queryObject->where, function ($value, $index) use ($queryBuilder)
+            {
                 $whereInput = preg_match("%([a-z_]+)\.([a-z_]+)%", $index) ? $index : "{$index}";
                 if (empty($queryBuilder->getQueryPart('where'))) {
                     $queryBuilder->where("{$whereInput} = :{$index}");
@@ -168,7 +170,8 @@ class AbstractRepository extends DoctrineRepository
     public function hydratorOrder(QueryBuilder &$queryBuilder, EntityRepositoryQuery &$queryObject)
     {
         if (!empty($queryObject->orderBy)) {
-            array_walk($queryObject->orderBy, function ($inputValue, $inputKey) use ($queryBuilder) {
+            array_walk($queryObject->orderBy, function ($inputValue, $inputKey) use ($queryBuilder)
+            {
                 $orderInput = preg_match("%([a-z_]+)\.([a-z_]+)%", $inputKey) ? $inputKey : "{$inputKey}";
                 if (empty($queryBuilder->getQueryPart('orderBy'))) {
                     $queryBuilder->orderBy($orderInput, $inputValue);

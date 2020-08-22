@@ -42,7 +42,7 @@ class AbstractRepository extends DoctrineRepository
      */
     public function find($value, $inputWhere = 'id', $inputSelect = [])
     {
-        $inputSelect = is_array($inputSelect) ? implode(", ", $inputSelect) : '*';
+        $inputSelect = !is_array($inputSelect) ? implode(", ", $inputSelect) : '*';
         $query       = $this->conn->query("SELECT {$inputSelect} FROM {$this->table} WHERE {$inputWhere}='{$value}'");
         $this->setFetchMode($query);
         return $query->fetch();

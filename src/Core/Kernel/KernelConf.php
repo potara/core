@@ -106,10 +106,10 @@ class KernelConf extends AbstractEntity
             'modules_path'        => $modulesPath,
             'cache_module'        => is_bool($conf['cache_module']) ? $conf['cache_module'] : true,
             'ignore_cache_module' => is_bool($conf['ignore_cache_module']) ? $conf['ignore_cache_module'] : false,
-            'cache_module_file'   => 'modules.yml'
+            'cache_module_file'   => 'modules.yml',
         ];
 
-        $confFinal['cache_twig'] = $conf['cache_twig'] ? $confFinal['cache'] . '/twig' : false;
+        $confFinal['cache_twig'] = (isset($conf['cache_twig']) && $conf['cache_twig']===true) ? $confFinal['cache'] . '/twig' : false;
 
         parent::__construct($confFinal);
         $this->loadConfFile();

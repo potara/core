@@ -43,7 +43,8 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
      */
     public function toDB(&$value) : void
     {
-        $action = $this->options['action'];
+
+        $action = isset($this->options['action'])?:null;
 
         if ($action == 'start') {
             $value = is_null($value) ? (new \DateTime('now'))->format($this->options['format']) : $value;

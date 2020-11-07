@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
-  <test className="EntityTest" methodName="testEntityToPHP" prettifiedClassName="Entity" prettifiedMethodName="Entity to p h p" status="0" time="0.016225832" size="-1" groups="default">
+  <test className="EntityTest" methodName="testEntityToPHP" prettifiedClassName="Entity" prettifiedMethodName="Entity to p h p" status="0" time="0.014524372" size="-1" groups="default">
     <group name="default"/>
   </test>
-  <test className="EntityTest" methodName="testEntityToDB" prettifiedClassName="Entity" prettifiedMethodName="Entity to d b" status="0" time="0.025248682" size="-1" groups="default">
+  <test className="EntityTest" methodName="testEntityToDB" prettifiedClassName="Entity" prettifiedMethodName="Entity to d b" status="0" time="0.036377007" size="-1" groups="default">
     <group name="default"/>
   </test>
-  <test className="SlugTest" methodName="testSlug" prettifiedClassName="Slug" prettifiedMethodName="Slug" status="0" time="0.008638073" size="-1" groups="default">
+  <test className="SlugTest" methodName="testSlug" prettifiedClassName="Slug" prettifiedMethodName="Slug" status="0" time="0.009985735" size="-1" groups="default">
     <group name="default"/>
   </test>
-  <test className="SlugTest" methodName="testRemoveCaracter" prettifiedClassName="Slug" prettifiedMethodName="Remove caracter" status="0" time="0.015715856" size="-1" groups="default">
+  <test className="SlugTest" methodName="testRemoveCaracter" prettifiedClassName="Slug" prettifiedMethodName="Remove caracter" status="0" time="0.009751805" size="-1" groups="default">
     <group name="default"/>
   </test>
 </tests>

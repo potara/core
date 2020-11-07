@@ -30,6 +30,7 @@ final class ConvertToJson extends AbstractConvertTo implements ConvertToInterfac
      */
     public function toPHP(&$value): void
     {
+        $value = empty($value) ? $this->default : $value;
         $value = is_string($value) ? json_decode($value, $this->options['assoc'], $this->options['depth'], $this->options['options']) : $value;
     }
 
@@ -38,6 +39,8 @@ final class ConvertToJson extends AbstractConvertTo implements ConvertToInterfac
      */
     public function toDB(&$value): void
     {
-        $value = is_array($value) ? json_encode($value, $this->options['options'], $this->options['depth']) : null;
+        $value = empty($value) ? $this->default : $value;
+        $value = is_array($value) ? json_encode($value, $this->options['options'], $this->options['depth']) : $value;
+
     }
 }

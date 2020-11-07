@@ -17,7 +17,8 @@ final class ConvertToSerialize extends AbstractConvertTo implements ConvertToInt
      */
     public function toPHP(&$value): void
     {
-        $value = empty($value) ? $value : unserialize($value);
+        $value = empty($value) ? $this->default : $value;
+        $value = !is_string($value) ? $value : unserialize($value);
     }
 
     /**
@@ -25,6 +26,7 @@ final class ConvertToSerialize extends AbstractConvertTo implements ConvertToInt
      */
     public function toDB(&$value): void
     {
+        $value = empty($value) ? $this->default : $value;
         $value = is_array($value) ? serialize($value) : $value;
     }
 }

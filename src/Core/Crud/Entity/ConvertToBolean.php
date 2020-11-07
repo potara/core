@@ -17,7 +17,7 @@ final class ConvertToBolean extends AbstractConvertTo implements ConvertToInterf
      */
     public function toPHP(&$value): void
     {
-        $value = is_null($value) ? null : (bool)$value;
+        $value = is_null($value) ? $this->default : (bool)$value;
     }
 
     /**

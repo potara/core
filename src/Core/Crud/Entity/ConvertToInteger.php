@@ -17,7 +17,7 @@ final class ConvertToInteger extends AbstractConvertTo implements ConvertToInter
      */
     public function toPHP(&$value): void
     {
-        $value = (int)$value;
+        $value = empty($value) ? (int)$this->default : (int)$value;
     }
 
     /**

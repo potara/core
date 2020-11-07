@@ -87,31 +87,7 @@ class KernelConf extends AbstractEntity
 
     public function __construct($conf = [])
     {
-        $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-        $storagePath  = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR;
-        $confPath     = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR;
-        $modules      = "app";
-        $modulesPath  = $documentRoot . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $modules;
-
-        $confFinal = [
-            'debug'               => !empty($conf['debug']) ? (bool) $conf['debug'] : false,
-            'root'                => $documentRoot,
-            'conf'                => $confPath,
-            'conf_file'           => !empty($conf['conf_file']) ? $conf['conf_file'] : $confPath . 'app.yml',
-            'conf_data'           => [],
-            'storage'             => $storagePath,
-            'log'                 => $storagePath . "log" . DIRECTORY_SEPARATOR,
-            'cache'               => $storagePath . "cache" . DIRECTORY_SEPARATOR,
-            'modules'             => $modules,
-            'modules_path'        => $modulesPath,
-            'cache_module'        => is_bool($conf['cache_module']) ? $conf['cache_module'] : true,
-            'ignore_cache_module' => is_bool($conf['ignore_cache_module']) ? $conf['ignore_cache_module'] : false,
-            'cache_module_file'   => 'modules.yml',
-        ];
-
-        $confFinal['cache_twig'] = (isset($conf['cache_twig']) && $conf['cache_twig']===true) ? $confFinal['cache'] . '/twig' : false;
-
-        parent::__construct($confFinal);
+        parent::__construct($conf);
         $this->loadConfFile();
 
     }

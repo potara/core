@@ -1,34 +1,34 @@
 
-##teamcity[testCount count='4' flowId='6939']
+##teamcity[testCount count='4' flowId='1849']
 
-##teamcity[testSuiteStarted name='CRUD' flowId='6939']
+##teamcity[testSuiteStarted name='CRUD' flowId='1849']
 
-##teamcity[testSuiteStarted name='EntityTest' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest' flowId='6939']
+##teamcity[testSuiteStarted name='EntityTest' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest' flowId='1849']
 
-##teamcity[testStarted name='testEntityToPHP' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest::testEntityToPHP' flowId='6939']
+##teamcity[testStarted name='testEntityToPHP' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest::testEntityToPHP' flowId='1849']
 
-##teamcity[testFinished name='testEntityToPHP' duration='15' flowId='6939']
+##teamcity[testFinished name='testEntityToPHP' duration='16' flowId='1849']
 
-##teamcity[testStarted name='testEntityToDB' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest::testEntityToDB' flowId='6939']
+##teamcity[testStarted name='testEntityToDB' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Crud/tests/EntityTest.php::\EntityTest::testEntityToDB' flowId='1849']
 
-##teamcity[testFinished name='testEntityToDB' duration='20' flowId='6939']
+##teamcity[testFinished name='testEntityToDB' duration='25' flowId='1849']
 
-##teamcity[testSuiteFinished name='EntityTest' flowId='6939']
+##teamcity[testSuiteFinished name='EntityTest' flowId='1849']
 
-##teamcity[testSuiteFinished name='CRUD' flowId='6939']
+##teamcity[testSuiteFinished name='CRUD' flowId='1849']
 
-##teamcity[testSuiteStarted name='Lib' flowId='6939']
+##teamcity[testSuiteStarted name='Lib' flowId='1849']
 
-##teamcity[testSuiteStarted name='SlugTest' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest' flowId='6939']
+##teamcity[testSuiteStarted name='SlugTest' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest' flowId='1849']
 
-##teamcity[testStarted name='testSlug' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest::testSlug' flowId='6939']
+##teamcity[testStarted name='testSlug' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest::testSlug' flowId='1849']
 
-##teamcity[testFinished name='testSlug' duration='9' flowId='6939']
+##teamcity[testFinished name='testSlug' duration='9' flowId='1849']
 
-##teamcity[testStarted name='testRemoveCaracter' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest::testRemoveCaracter' flowId='6939']
+##teamcity[testStarted name='testRemoveCaracter' locationHint='php_qn:///Users/bruno/Projetos/web/potara/core/src/Core/Lib/tests/SlugTest.php::\SlugTest::testRemoveCaracter' flowId='1849']
 
-##teamcity[testFinished name='testRemoveCaracter' duration='9' flowId='6939']
+##teamcity[testFinished name='testRemoveCaracter' duration='16' flowId='1849']
 
-##teamcity[testSuiteFinished name='SlugTest' flowId='6939']
+##teamcity[testSuiteFinished name='SlugTest' flowId='1849']
 
-##teamcity[testSuiteFinished name='Lib' flowId='6939']
+##teamcity[testSuiteFinished name='Lib' flowId='1849']

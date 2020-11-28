@@ -1,34 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
-        backupGlobals="true"
-        backupStaticAttributes="false"
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="true" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnError="false" stopOnFailure="true" stopOnIncomplete="false" stopOnSkipped="false" stopOnRisky="false" timeoutForSmallTests="1" timeoutForMediumTests="10" timeoutForLargeTests="60" verbose="false" bootstrap="./vendor/autoload.php">
+  <coverage includeUncoveredFiles="true"
+            processUncoveredFiles="true"
+            ignoreDeprecatedCodeUnits="true"
+            disableCodeCoverageIgnore="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
 
-        cacheTokens="false"
-        colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
+    <report>
+      <clover outputFile="tests/_reports/clover.xml"/>
+      <crap4j outputFile="tests/_reports/crap4j.xml" threshold="50"/>
+      <html outputDirectory="tests/_reports/html-coverage" lowUpperBound="50" highLowerBound="90"/>
+      <php outputFile="tests/_reports/coverage.php"/>
+      <text outputFile="tests/_reports/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+      <xml outputDirectory="tests/_reports/xml-coverage"/>
+    </report>
+  </coverage>
 
-        processIsolation="false"
-        stopOnError="false"
-        stopOnFailure="true"
-        stopOnIncomplete="false"
-        stopOnSkipped="false"
-        stopOnRisky="false"
-
-        timeoutForSmallTests="1"
-        timeoutForMediumTests="10"
-        timeoutForLargeTests="60"
-        verbose="false"
-        bootstrap="./vendor/autoload.php">
-    <testsuites>
-        <testsuite name="CRUD">
-            <directory suffix="Test.php">src/Core/Crud/tests/</directory>
-        </testsuite>
-        <testsuite name="Lib">
-            <directory suffix="Test.php">src/Core/Lib/tests/</directory>
-        </testsuite>
-    </testsuites>
+  <logging>
+    <junit outputFile="tests/_log/junit.xml"/>
+    <teamcity outputFile="tests/_log/teamcity.txt"/>
+    <testdoxHtml outputFile="tests/_log/testdox.html"/>
+    <testdoxText outputFile="tests/_log/testdox.txt"/>
+    <testdoxXml outputFile="tests/_log/testdox.xml"/>
+    <text outputFile="tests/_log/logfile.txt"/>
+  </logging>
+  <testsuites>
+    <testsuite name="CRUD">
+      <directory suffix="Test.php">src/Core/Crud/tests/</directory>
+    </testsuite>
+    <testsuite name="Lib">
+      <directory suffix="Test.php">src/Core/Lib/tests/</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

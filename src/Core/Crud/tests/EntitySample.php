@@ -18,6 +18,12 @@ class EntitySample extends AbstractEntity
      * @var type=integer
      */
     public $id;
+
+    /**
+     * @var type=uuid
+     */
+    public $uuid;
+
     /**
      * @var type=string
      */

@@ -14,6 +14,7 @@ use Potara\Core\Crud\Entity\ConvertToInterface;
 
 abstract class AbstractEntity
 {
+    public $_table;
 
     public function __construct($data = [])
     {
@@ -141,8 +142,7 @@ abstract class AbstractEntity
                     $parseVar['text'] = $this->$namePropety;
                 }
                 $result[$propety] = $loadClass($nameClassConvert, $parseVar);
-            }
-            else {
+            } else {
                 if ($typePropety == 'class') {
                     $result[$propety] = $loadClass($parseVar['name_class'], $parseVar);
                 }

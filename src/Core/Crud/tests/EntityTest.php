@@ -33,6 +33,7 @@ class EntityTest extends TestCase
     {
         $entity = $this->getEntity();
         $this->assertIsInt($entity->id, 'ID not integer');
+        $this->assertNull($entity->uuid, 'uuid not null');
         $this->assertIsString($entity->name, 'name not string');
         $this->assertIsFloat($entity->money, 'money notfloat');
         $this->assertIsFloat($entity->total, 'total not float');
@@ -46,6 +47,7 @@ class EntityTest extends TestCase
     {
         $entity = $this->getEntity()->toSave();
         $this->assertIsInt($entity->id, 'ID not integer');
+        $this->assertIsString($entity->uuid, 'uuid not string');
         $this->assertIsString($entity->name, 'name not string');
         $this->assertIsString($entity->slug, 'slug not string');
         $this->assertIsFloat($entity->money, 'money not string');

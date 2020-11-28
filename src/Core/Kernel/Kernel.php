@@ -22,7 +22,7 @@ class Kernel
     /** @var \Slim\App */
     public $app;
 
-    public function __construct($conf = [])
+    public function __construct(KernelEntity &$conf)
     {
         $this->app  = SlimBridge::create();
         $kernelConf = new KernelConf($conf);

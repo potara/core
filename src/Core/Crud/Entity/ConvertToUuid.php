@@ -9,15 +9,16 @@
  */
 
 namespace Potara\Core\Crud\Entity;
+use Ramsey\Uuid\Uuid;
 
-final class ConvertToBolean extends AbstractConvertTo implements ConvertToInterface
+final class ConvertToUuid extends AbstractConvertTo implements ConvertToInterface
 {
     /**
      * @param $value
      */
     public function toPHP(&$value): void
     {
-        $value = is_null($value) ? $this->default : (bool)$value;
+
     }
 
     /**
@@ -25,6 +26,8 @@ final class ConvertToBolean extends AbstractConvertTo implements ConvertToInterf
      */
     public function toDB(&$value): void
     {
-        $value = (int)$value;
+        if(empty($value)){
+            $value = Uuid::uuid4()->toString();
+        }
     }
 }

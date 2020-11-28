@@ -1,5 +1,6 @@
 composer.phar
-phpunit.phar
+phpf
+unit.phar
 .phpunit.result.cache
 /vendor/
 /.idea/

@@ -30,7 +30,11 @@ final class ConvertToDecimal extends AbstractConvertTo implements ConvertToInter
     public function toPHP(&$value): void
     {
         $options = $this->options;
-        $value   = empty($options) ? (float)$value : (float)number_format($value, $options['decimals'], $options['dp'], $options['ts']);
+        $value   = empty($value) ? $this->default : $value;
+
+        if(is_string($value) || is_float($value)){
+            $value = empty($options) ? (float)$value : (float)number_format($value, $options['decimals'], $options['dp'], $options['ts']);
+        }
     }
 
     /**
@@ -38,6 +42,8 @@ final class ConvertToDecimal extends AbstractConvertTo implements ConvertToInter
      */
     public function toDB(&$value): void
     {
-        $value = empty($value) ? $value : (float)number_format($value, $this->options['decimals'], '.', '');
+        $value = empty($value) ? $this->default : $value;
+
+        $value = (is_string($value) || is_float($value)) ? (float)number_format($value, $this->options['decimals'], '.', '') : $value;
     }
 }

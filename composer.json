@@ -20,10 +20,11 @@
       "App\\": "app/"
     }
   },
+  "minimum-stability": "stable",
   "require": {
     "ext-json": "*",
     "ext-intl": "*",
-    "slim/slim": "4.5.*",
+    "slim/slim": "4.7.*",
     "php-di/slim-bridge": "^3.0",
     "nyholm/psr7": "^1.2",
     "nyholm/psr7-server": "^0.3.0",

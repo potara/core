@@ -1,8 +1,0 @@
-Entity
- [x] Entity to p h p
- [x] Entity to d b
-
-Slug
- [x] Slug
- [x] Remove caracter
-

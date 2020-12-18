@@ -16,7 +16,7 @@ swiftmailer:
   username:
   password:
   auth:
-  stream_options: []
+  stream_options: [ ]
 
 jwt:
   entity: '\Potara\Core\Provider\Jwt\JwtEntity'
@@ -32,4 +32,5 @@ jwt:
   life: 3600
   refresh: 36000
   secret: secretkey
+  cookie: secretkey
   algorithm: HS384

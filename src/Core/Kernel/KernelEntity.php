@@ -14,19 +14,19 @@ namespace Potara\Core\Kernel;
 class KernelEntity
 {
 
-    public $debug;
-    public $root;
-    public $conf;
-    public $conf_file;
-    public $storage;
-    public $log;
-    public $cache;
-    public $modules             = 'app';
-    public $modules_path;
-    public $cache_module        = true;
-    public $cache_twig;
-    public $ignore_cache_module = false;
-    public $cache_module_file   = 'modules.yml';
+    public bool   $debug;
+    public string $root;
+    public string $conf;
+    public string $conf_file;
+    public string $storage;
+    public string $log;
+    public bool   $cache;
+    public string $modules             = 'app';
+    public string $modules_path;
+    public bool   $cache_module        = true;
+    public bool   $cache_twig          = false;
+    public bool   $ignore_cache_module = false;
+    public string $cache_module_file   = 'modules.yml';
 
     public function __construct()
     {
@@ -39,30 +39,29 @@ class KernelEntity
         $this->log          = $this->storage . "log" . DIRECTORY_SEPARATOR;
         $this->cache        = $this->storage . "cache" . DIRECTORY_SEPARATOR;
 
-        $this
-            ->setConfFile(null)
-            ->setCacheTwig(false);
+        $this->setConfFile(null)
+             ->setCacheTwig(false);
     }
 
-    public function setConfFile($file = null)
+    public function setConfFile(string|null $file = null): self
     {
         $this->conf_file = !empty($file) ? $file : $this->conf . "app.yml";
         return $this;
     }
 
-    public function setCacheModule($status = true)
+    public function setCacheModule(bool $status = true): self
     {
         $this->cache_module = is_bool($status) ? $status : $this->cache_module;
         return $this;
     }
 
-    public function setIgnoreCacheModule($status = true)
+    public function setIgnoreCacheModule(bool $status = true): self
     {
         $this->ignore_cache_module = is_bool($status) ? $status : $this->ignore_cache_module;
         return $this;
     }
 
-    public function setCacheTwig($status = true)
+    public function setCacheTwig(bool $status = true)
     {
         $this->cache_twig = (is_bool($status) && $status === false) ? false : $this->cache . DIRECTORY_SEPARATOR . 'twig';
         return $this;
@@ -73,8 +72,7 @@ class KernelEntity
      */
     public function toArray(): array
     {
-        return array_reduce(array_keys(get_object_vars($this)), function ($result, $item)
-        {
+        return array_reduce(array_keys(get_object_vars($this)), function ($result, $item) {
             $result[$item] = $this->$item;
             return $result;
         }, []);

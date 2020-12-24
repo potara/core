@@ -23,26 +23,30 @@ abstract class AbstractResponse
 
     /**
      * @param array $data
-     * @param null $code
+     * @param null  $code
      * @param array $header
+     *
      * @return Response
      */
-    public function toJson(array $data = [], $code = null, array $header = [])
+    public function toJson(array $data = [], $code = null, array $header = []): Response
     {
         $statusCode = empty($code) ? 200 : (int)$code;
         $response   = $this->response->withStatus($statusCode)
-            ->withHeader('Content-Type', 'application/json');
+                                     ->withHeader('Content-Type', 'application/json');
 
         //ADICIONAR DADOS AO HEADER
-        $this->addHeader($response, $header);
+        $this->addHeader($header);
 
         $data['statusCode'] = $statusCode;
-        $response->withJson($data, $statusCode);
+        $payload            = json_encode($data, JSON_PRETTY_PRINT);
+        $response->getBody()
+                 ->write($payload);
         return $response;
     }
 
     /**
      * @param array $header
+     *
      * @return AbstractResponse
      */
     protected function addHeader(array $header = []): self

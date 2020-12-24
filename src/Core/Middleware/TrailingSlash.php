@@ -28,11 +28,11 @@ class TrailingSlash extends AbstractMiddleware
             $uri = $uri->withPath(substr($path, 0, -1));
 
             if ($request->getMethod() == 'GET') {
-                $response = new Response();
-                return $response->withHeader('Location', (string) $uri)
-                                ->withStatus(301);
-            }
-            else {
+
+                return (new Response())->withStatus(301)
+                                       ->withHeader('Location', (string)$uri);
+
+            } else {
                 $request = $request->withUri($uri);
             }
         }

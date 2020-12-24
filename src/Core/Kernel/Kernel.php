@@ -76,7 +76,7 @@ class Kernel
      *
      * @return array
      */
-    public function loadModules(KernelConf $kernelConf) : array
+    public function loadModules(KernelConf $kernelConf): array
     {
 
         $cacheFile = $kernelConf->cache . $kernelConf->cache_module_file;
@@ -117,7 +117,8 @@ class Kernel
         }
 
 
-        $this->app->getContainer()->set("modules_load", $listModulesEnable);
+        $this->app->getContainer()
+                  ->set("modules_load", $listModulesEnable);
 
         return $listModulesEnable;
 
@@ -137,19 +138,14 @@ class Kernel
     protected function findConfigModule($dir, $flag, $prefix = null)
     {
 
-        $filesConfigModule = (new Finder())->name('ConfigModule.php')->in($dir);
+        $filesConfigModule = (new Finder())->name('ConfigModule.php')
+                                           ->in($dir);
 
         return array_reduce(iterator_to_array($filesConfigModule), function ($result, SplFileInfo $file) use ($prefix, $flag) {
 
             if (preg_match_all("%{$flag}\\" . DIRECTORY_SEPARATOR . "(.*)%", $file->getPathname(), $mathFile)) {
 
-                $namespace = "\\{$prefix}\\" . str_replace([
-                        '.php',
-                        '/'
-                    ], [
-                        '',
-                        "\\"
-                    ], current($mathFile[1]));
+                $namespace = "\\{$prefix}\\" . str_replace(['.php', '/'], ['', "\\"], current($mathFile[1]));
 
                 if (class_exists($namespace)) {
                     $result[] = $namespace;
@@ -166,7 +162,7 @@ class Kernel
      *
      * @return string
      */
-    protected function normalizeNameRouter($routerName, $isFistRouterLevel = false) : string
+    protected function normalizeNameRouter($routerName, $isFistRouterLevel = false): string
     {
         return empty($routerName) ? ($isFistRouterLevel) ? "/" : "" : '/' . $routerName;
     }
@@ -175,7 +171,7 @@ class Kernel
      * @param $routerClass
      * @param $routerName
      */
-    protected function factoryRouter($routerClass, $routerName) : void
+    protected function factoryRouter($routerClass, $routerName): void
     {
         if (!is_array($routerClass)) {
             $this->app->group($this->normalizeNameRouter($routerName, true), $routerClass);
@@ -190,7 +186,7 @@ class Kernel
      * @param RouteCollectorProxy $group
      * @param                     $routes
      */
-    protected function factoryRouterGroup(RouteCollectorProxy &$group, &$routes) : void
+    protected function factoryRouterGroup(RouteCollectorProxy &$group, &$routes): void
     {
         array_walk($routes, function (&$routerClass, $routerName) use (&$group) {
             if (!is_array($routerClass)) {

@@ -43,7 +43,7 @@ class KernelEntity
              ->setCacheTwig(false);
     }
 
-    public function setConfFile(string|null $file = null): self
+    public function setConfFile(string $file = null): self
     {
         $this->conf_file = !empty($file) ? $file : $this->conf . "app.yml";
         return $this;

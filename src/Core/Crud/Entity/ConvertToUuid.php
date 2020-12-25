@@ -9,6 +9,9 @@
  */
 
 namespace Potara\Core\Crud\Entity;
+
+use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
 
 final class ConvertToUuid extends AbstractConvertTo implements ConvertToInterface
@@ -26,8 +29,10 @@ final class ConvertToUuid extends AbstractConvertTo implements ConvertToInterfac
      */
     public function toDB(&$value): void
     {
-        if(empty($value)){
-            $value = Uuid::uuid4()->toString();
+        if (empty($value)) {
+            $nodeProvider = new StaticNodeProvider(new Hexadecimal(random_bytes(10)));
+            $value        = Uuid::uuid1($nodeProvider)
+                                ->toString();
         }
     }
 }

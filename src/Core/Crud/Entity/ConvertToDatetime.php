@@ -18,7 +18,8 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
     public function __construct(AbstractEntity &$entity, &$options = null)
     {
         $options = $this->factoryOptions([
-            'format' => empty($options['format']) ? 'Y-m-d H:i:s' : $options['format']
+            'format' => empty($options['format']) ? 'Y-m-d H:i:s' : $options['format'],
+            'no_db' => is_bool($options['no_db']) ? $options['no_db'] : false
         ], $options);
 
         parent::__construct($entity, $options);
@@ -27,7 +28,7 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
     /**
      * @param $value
      */
-    public function toPHP(&$value) : void
+    public function toPHP(&$value): void
     {
         $value = empty($value) ? $this->default : $value;
 
@@ -43,20 +44,23 @@ final class ConvertToDatetime extends AbstractConvertTo implements ConvertToInte
     /**
      * @param $value
      */
-    public function toDB(&$value) : void
+    public function toDB(&$value): void
     {
-        $value = empty($value) ? $this->default : $value;
+        if (!$this->options['no_db']) {
+            $value = empty($value) ? $this->default : $value;
 
-        $action = isset($this->options['action'])?:null;
+            $action = isset($this->options['action']) ?: null;
 
-        if ($action == 'start') {
-            $value = is_null($value) ? (new \DateTime('now'))->format($this->options['format']) : $value;
+            if ($action == 'start') {
+                $value = is_null($value) ? (new \DateTime('now'))->format($this->options['format']) : $value;
+            }
+            if ($action == 'reload') {
+                $value = new \DateTime('now');
+            }
+
+            $value = $value instanceof \DateTime ? $value->format($this->options['format']) : $value;
+        }else{
+            $value = AbstractEntity::REMOVE_TO_DB;
         }
-        if ($action == 'reload') {
-            $value = new \DateTime('now');
-        }
-
-        $value = $value instanceof \DateTime ? $value->format($this->options['format']) : $value;
-
     }
 }

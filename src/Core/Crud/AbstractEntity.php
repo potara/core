@@ -14,6 +14,7 @@ use Potara\Core\Crud\Entity\ConvertToInterface;
 
 abstract class AbstractEntity
 {
+    const REMOVE_TO_DB = "_remove_to_db";
     public $_table;
 
     public function __construct($data = [])
@@ -69,8 +70,12 @@ abstract class AbstractEntity
      */
     public function toArray(): array
     {
-        return array_reduce(array_keys(get_object_vars($this)), function ($result, $item) {
-            in_array($item, $this->noToArray()) ?: $result[$item] = $this->$item;
+        $checkIsValidVar = function ($name, $value) {
+            return in_array($name, $this->noToArray()) || $value == self::REMOVE_TO_DB;
+        };
+
+        return array_reduce(array_keys(get_object_vars($this)), function ($result, $item) use ($checkIsValidVar) {
+            $checkIsValidVar($item, $this->$item) ?: $result[$item] = $this->$item;
             return $result;
         }, []);
     }

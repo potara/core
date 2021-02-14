@@ -10,6 +10,7 @@
 
 namespace Potara\Core\Crud\Entity;
 
+use Potara\Core\Lib\FactoryUuid;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Uuid;
 
@@ -29,8 +30,7 @@ final class ConvertToUuid extends AbstractConvertTo implements ConvertToInterfac
     public function toDB(&$value): void
     {
         if (empty($value)) {
-            $value = Uuid::uuid1((new RandomNodeProvider())->getNode())
-                         ->toString();
+            $value = FactoryUuid::v1Random();
         }
     }
 }
